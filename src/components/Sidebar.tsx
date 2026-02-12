@@ -9,11 +9,15 @@ import {
   Settings,
   Truck,
   X,
+  Moon,
+  Sun,
 } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  isDark: boolean;
+  onToggleTheme: () => void;
 }
 
 const navItems = [
@@ -26,7 +30,7 @@ const navItems = [
   { to: '/einstellungen', icon: Settings, label: 'Einstellungen' },
 ];
 
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, isDark, onToggleTheme }: SidebarProps) {
   return (
     <>
       {isOpen && (
@@ -85,7 +89,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </ul>
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
+        <div className="absolute bottom-0 left-0 right-0 p-4 space-y-3 border-t border-white/10">
+          <button
+            onClick={onToggleTheme}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-sidebar-hover hover:text-white transition-all duration-200"
+          >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            {isDark ? 'Light Mode' : 'Dark Mode'}
+          </button>
           <div className="bg-sidebar-hover rounded-lg p-3">
             <p className="text-xs text-slate-400">Geschäftsjahr</p>
             <p className="text-sm font-semibold text-white">{new Date().getFullYear()}</p>

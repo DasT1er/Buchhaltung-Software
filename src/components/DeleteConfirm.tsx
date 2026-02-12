@@ -19,14 +19,14 @@ export default function DeleteConfirm({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} maxWidth="max-w-sm">
       <div className="text-center py-2">
-        <div className="mx-auto w-12 h-12 bg-danger-50 rounded-full flex items-center justify-center mb-4">
-          <AlertTriangle size={24} className="text-danger-600" />
+        <div className="mx-auto w-12 h-12 bg-d-tint rounded-full flex items-center justify-center mb-4">
+          <AlertTriangle size={24} className="text-danger-600 dark:text-danger-400" />
         </div>
-        <p className="text-sm text-slate-600 mb-6">{message}</p>
+        <p className="text-sm text-body mb-6">{message}</p>
         <div className="flex gap-3 justify-center">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
+            className="px-4 py-2 text-sm font-medium text-heading bg-card-alt rounded-lg hover:opacity-80 transition-colors"
           >
             Abbrechen
           </button>

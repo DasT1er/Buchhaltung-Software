@@ -8,6 +8,9 @@ import DeleteConfirm from '../components/DeleteConfirm';
 import { useStore } from '../store/useStore';
 import type { Kunde } from '../types';
 
+const inputCls = 'w-full px-3 py-2 text-sm bg-input border border-divider rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-heading transition-colors';
+const labelCls = 'block text-sm font-medium text-heading mb-1';
+
 export default function Kunden() {
   const { onMenuClick } = useOutletContext<{ onMenuClick: () => void }>();
   const { kunden, addKunde, updateKunde, deleteKunde } = useStore();
@@ -28,22 +31,12 @@ export default function Kunden() {
     );
   }, [kunden, search]);
 
-  function openNew() {
-    setEditItem(null);
-    setShowModal(true);
-  }
-
-  function openEdit(item: Kunde) {
-    setEditItem(item);
-    setShowModal(true);
-  }
+  function openNew() { setEditItem(null); setShowModal(true); }
+  function openEdit(item: Kunde) { setEditItem(item); setShowModal(true); }
 
   function handleSave(data: Omit<Kunde, 'id'>) {
-    if (editItem) {
-      updateKunde({ ...data, id: editItem.id });
-    } else {
-      addKunde({ ...data, id: uuidv4() });
-    }
+    if (editItem) { updateKunde({ ...data, id: editItem.id }); }
+    else { addKunde({ ...data, id: uuidv4() }); }
     setShowModal(false);
   }
 
@@ -54,125 +47,71 @@ export default function Kunden() {
         subtitle={`${kunden.length} Kunden gespeichert`}
         onMenuClick={onMenuClick}
         actions={
-          <button
-            onClick={openNew}
-            className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors shadow-sm"
-          >
-            <Plus size={16} />
-            <span className="hidden sm:inline">Neuer Kunde</span>
+          <button onClick={openNew} className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors shadow-sm">
+            <Plus size={16} /><span className="hidden sm:inline">Neuer Kunde</span>
           </button>
         }
       />
 
       <div className="p-4 sm:p-6 space-y-4">
-        {/* Search */}
         <div className="relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
           <input
             type="text"
             placeholder="Kunden suchen..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2.5 text-sm bg-card border border-divider rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-heading transition-colors"
           />
         </div>
 
-        {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map(kunde => (
-            <div
-              key={kunde.id}
-              className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
-            >
+            <div key={kunde.id} className="bg-card rounded-xl p-5 shadow-sm border border-divider-light hover:shadow-md transition-all">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
-                    <Building2 size={18} className="text-primary-600" />
+                  <div className="w-10 h-10 bg-p-tint rounded-lg flex items-center justify-center">
+                    <Building2 size={18} className="text-p-on-tint" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-800">{kunde.firma}</h4>
-                    {kunde.ansprechpartner && (
-                      <p className="text-xs text-slate-500">{kunde.ansprechpartner}</p>
-                    )}
+                    <h4 className="font-semibold text-heading">{kunde.firma}</h4>
+                    {kunde.ansprechpartner && <p className="text-xs text-body">{kunde.ansprechpartner}</p>}
                   </div>
                 </div>
                 <div className="flex gap-1">
-                  <button
-                    onClick={() => openEdit(kunde)}
-                    className="p-1.5 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                  >
-                    <Edit2 size={14} />
-                  </button>
-                  <button
-                    onClick={() => setDeleteId(kunde.id)}
-                    className="p-1.5 text-slate-400 hover:text-danger-600 hover:bg-danger-50 rounded-lg transition-colors"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                  <button onClick={() => openEdit(kunde)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint rounded-lg transition-colors"><Edit2 size={14} /></button>
+                  <button onClick={() => setDeleteId(kunde.id)} className="p-1.5 text-muted hover:text-danger-600 hover:bg-d-tint rounded-lg transition-colors"><Trash2 size={14} /></button>
                 </div>
               </div>
-
               <div className="space-y-1.5 text-sm">
                 {(kunde.strasse || kunde.plz || kunde.ort) && (
-                  <p className="text-slate-500 text-xs">
-                    {[kunde.strasse, `${kunde.plz ?? ''} ${kunde.ort ?? ''}`.trim()].filter(Boolean).join(', ')}
-                  </p>
+                  <p className="text-body text-xs">{[kunde.strasse, `${kunde.plz ?? ''} ${kunde.ort ?? ''}`.trim()].filter(Boolean).join(', ')}</p>
                 )}
                 {kunde.email && (
-                  <div className="flex items-center gap-2 text-slate-500">
-                    <Mail size={13} />
-                    <span className="text-xs truncate">{kunde.email}</span>
-                  </div>
+                  <div className="flex items-center gap-2 text-body"><Mail size={13} /><span className="text-xs truncate">{kunde.email}</span></div>
                 )}
                 {kunde.telefon && (
-                  <div className="flex items-center gap-2 text-slate-500">
-                    <Phone size={13} />
-                    <span className="text-xs">{kunde.telefon}</span>
-                  </div>
+                  <div className="flex items-center gap-2 text-body"><Phone size={13} /><span className="text-xs">{kunde.telefon}</span></div>
                 )}
               </div>
             </div>
           ))}
-
           {filtered.length === 0 && (
-            <div className="col-span-full py-12 text-center text-slate-400">
-              <Building2 size={40} className="mx-auto mb-3 text-slate-300" />
+            <div className="col-span-full py-12 text-center text-muted">
+              <Building2 size={40} className="mx-auto mb-3 opacity-50" />
               <p className="text-sm">Keine Kunden gefunden. Klicke auf "Neuer Kunde" um zu beginnen.</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Modal */}
-      <KundeModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        onSave={handleSave}
-        initial={editItem}
-      />
-
-      <DeleteConfirm
-        isOpen={deleteId !== null}
-        onClose={() => setDeleteId(null)}
-        onConfirm={() => deleteId && deleteKunde(deleteId)}
-        title="Kunde löschen"
-        message="Möchten Sie diesen Kunden wirklich löschen?"
-      />
+      <KundeModal isOpen={showModal} onClose={() => setShowModal(false)} onSave={handleSave} initial={editItem} />
+      <DeleteConfirm isOpen={deleteId !== null} onClose={() => setDeleteId(null)} onConfirm={() => deleteId && deleteKunde(deleteId)} title="Kunde löschen" message="Möchten Sie diesen Kunden wirklich löschen?" />
     </>
   );
 }
 
-function KundeModal({
-  isOpen,
-  onClose,
-  onSave,
-  initial,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: Omit<Kunde, 'id'>) => void;
-  initial: Kunde | null;
-}) {
+function KundeModal({ isOpen, onClose, onSave, initial }: { isOpen: boolean; onClose: () => void; onSave: (data: Omit<Kunde, 'id'>) => void; initial: Kunde | null }) {
   const [firma, setFirma] = useState(initial?.firma ?? '');
   const [ansprechpartner, setAnsprechpartner] = useState(initial?.ansprechpartner ?? '');
   const [strasse, setStrasse] = useState(initial?.strasse ?? '');
@@ -185,15 +124,10 @@ function KundeModal({
 
   useState(() => {
     if (isOpen) {
-      setFirma(initial?.firma ?? '');
-      setAnsprechpartner(initial?.ansprechpartner ?? '');
-      setStrasse(initial?.strasse ?? '');
-      setPlz(initial?.plz ?? '');
-      setOrt(initial?.ort ?? '');
-      setTelefon(initial?.telefon ?? '');
-      setEmail(initial?.email ?? '');
-      setSteuernummer(initial?.steuernummer ?? '');
-      setNotizen(initial?.notizen ?? '');
+      setFirma(initial?.firma ?? ''); setAnsprechpartner(initial?.ansprechpartner ?? '');
+      setStrasse(initial?.strasse ?? ''); setPlz(initial?.plz ?? ''); setOrt(initial?.ort ?? '');
+      setTelefon(initial?.telefon ?? ''); setEmail(initial?.email ?? '');
+      setSteuernummer(initial?.steuernummer ?? ''); setNotizen(initial?.notizen ?? '');
     }
   });
 
@@ -201,129 +135,31 @@ function KundeModal({
     e.preventDefault();
     if (!firma) return;
     onSave({
-      firma,
-      ansprechpartner: ansprechpartner || undefined,
-      strasse: strasse || undefined,
-      plz: plz || undefined,
-      ort: ort || undefined,
-      telefon: telefon || undefined,
-      email: email || undefined,
-      steuernummer: steuernummer || undefined,
-      notizen: notizen || undefined,
+      firma, ansprechpartner: ansprechpartner || undefined, strasse: strasse || undefined,
+      plz: plz || undefined, ort: ort || undefined, telefon: telefon || undefined,
+      email: email || undefined, steuernummer: steuernummer || undefined, notizen: notizen || undefined,
     });
   }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={initial ? 'Kunde bearbeiten' : 'Neuer Kunde'} maxWidth="max-w-xl">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Firma / Name *</label>
-          <input
-            type="text"
-            value={firma}
-            onChange={e => setFirma(e.target.value)}
-            placeholder="z.B. Spedition Müller GmbH"
-            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Ansprechpartner</label>
-          <input
-            type="text"
-            value={ansprechpartner}
-            onChange={e => setAnsprechpartner(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Straße</label>
-          <input
-            type="text"
-            value={strasse}
-            onChange={e => setStrasse(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-          />
-        </div>
-
+        <div><label className={labelCls}>Firma / Name *</label><input type="text" value={firma} onChange={e => setFirma(e.target.value)} placeholder="z.B. Spedition Müller GmbH" className={inputCls} required /></div>
+        <div><label className={labelCls}>Ansprechpartner</label><input type="text" value={ansprechpartner} onChange={e => setAnsprechpartner(e.target.value)} className={inputCls} /></div>
+        <div><label className={labelCls}>Straße</label><input type="text" value={strasse} onChange={e => setStrasse(e.target.value)} className={inputCls} /></div>
         <div className="grid grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">PLZ</label>
-            <input
-              type="text"
-              value={plz}
-              onChange={e => setPlz(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Ort</label>
-            <input
-              type="text"
-              value={ort}
-              onChange={e => setOrt(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
+          <div><label className={labelCls}>PLZ</label><input type="text" value={plz} onChange={e => setPlz(e.target.value)} className={inputCls} /></div>
+          <div className="col-span-2"><label className={labelCls}>Ort</label><input type="text" value={ort} onChange={e => setOrt(e.target.value)} className={inputCls} /></div>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Telefon</label>
-            <input
-              type="tel"
-              value={telefon}
-              onChange={e => setTelefon(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">E-Mail</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
+          <div><label className={labelCls}>Telefon</label><input type="tel" value={telefon} onChange={e => setTelefon(e.target.value)} className={inputCls} /></div>
+          <div><label className={labelCls}>E-Mail</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} className={inputCls} /></div>
         </div>
-
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Steuernummer / USt-IdNr.</label>
-          <input
-            type="text"
-            value={steuernummer}
-            onChange={e => setSteuernummer(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Notizen</label>
-          <textarea
-            value={notizen}
-            onChange={e => setNotizen(e.target.value)}
-            rows={2}
-            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
-          />
-        </div>
-
+        <div><label className={labelCls}>Steuernummer / USt-IdNr.</label><input type="text" value={steuernummer} onChange={e => setSteuernummer(e.target.value)} className={inputCls} /></div>
+        <div><label className={labelCls}>Notizen</label><textarea value={notizen} onChange={e => setNotizen(e.target.value)} rows={2} className={`${inputCls} resize-none`} /></div>
         <div className="flex justify-end gap-3 pt-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
-          >
-            Abbrechen
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            {initial ? 'Speichern' : 'Hinzufügen'}
-          </button>
+          <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-heading bg-card-alt rounded-lg hover:opacity-80 transition-colors">Abbrechen</button>
+          <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors">{initial ? 'Speichern' : 'Hinzufügen'}</button>
         </div>
       </form>
     </Modal>

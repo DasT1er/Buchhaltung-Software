@@ -25,13 +25,13 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-      <div className={`relative bg-white rounded-xl shadow-2xl w-full ${maxWidth} max-h-[90vh] overflow-y-auto`}>
-        <div className="sticky top-0 bg-white flex items-center justify-between px-6 py-4 border-b border-slate-200 rounded-t-xl">
-          <h3 className="text-lg font-semibold text-slate-800">{title}</h3>
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className={`relative bg-card rounded-xl shadow-2xl w-full ${maxWidth} max-h-[90vh] overflow-y-auto transition-colors`}>
+        <div className="sticky top-0 bg-card flex items-center justify-between px-6 py-4 border-b border-divider rounded-t-xl">
+          <h3 className="text-lg font-semibold text-heading">{title}</h3>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
+            className="text-muted hover:text-heading transition-colors"
           >
             <X size={20} />
           </button>
