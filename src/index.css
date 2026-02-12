@@ -1,5 +1,59 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --page-bg: #f1f5f9;
+  --card-bg: #ffffff;
+  --card-alt-bg: #f8fafc;
+  --input-bg-val: #ffffff;
+  --heading-val: #1e293b;
+  --body-val: #475569;
+  --muted-val: #94a3b8;
+  --divider-val: #e2e8f0;
+  --divider-light-val: #f1f5f9;
+  --s-tint-val: #f0fdf4;
+  --s-tint-border-val: #dcfce7;
+  --s-on-tint-val: #15803d;
+  --d-tint-val: #fef2f2;
+  --d-tint-border-val: #fee2e2;
+  --d-on-tint-val: #b91c1c;
+  --w-tint-val: #fffbeb;
+  --w-tint-border-val: #fef3c7;
+  --w-on-tint-val: #92400e;
+  --p-tint-val: #eff6ff;
+  --p-tint-border-val: #dbeafe;
+  --p-on-tint-val: #1d4ed8;
+  --chart-grid: #e2e8f0;
+  --chart-text: #64748b;
+}
+
+.dark {
+  --page-bg: #0f172a;
+  --card-bg: #1e293b;
+  --card-alt-bg: #334155;
+  --input-bg-val: #0f172a;
+  --heading-val: #f1f5f9;
+  --body-val: #cbd5e1;
+  --muted-val: #64748b;
+  --divider-val: #334155;
+  --divider-light-val: #1e293b;
+  --s-tint-val: rgba(34, 197, 94, 0.1);
+  --s-tint-border-val: rgba(34, 197, 94, 0.2);
+  --s-on-tint-val: #4ade80;
+  --d-tint-val: rgba(239, 68, 68, 0.1);
+  --d-tint-border-val: rgba(239, 68, 68, 0.2);
+  --d-on-tint-val: #f87171;
+  --w-tint-val: rgba(245, 158, 11, 0.1);
+  --w-tint-border-val: rgba(245, 158, 11, 0.2);
+  --w-on-tint-val: #fbbf24;
+  --p-tint-val: rgba(59, 130, 246, 0.1);
+  --p-tint-border-val: rgba(59, 130, 246, 0.2);
+  --p-on-tint-val: #60a5fa;
+  --chart-grid: #334155;
+  --chart-text: #94a3b8;
+}
+
 @theme {
   --color-primary-50: #eff6ff;
   --color-primary-100: #dbeafe;
@@ -15,24 +69,49 @@
 
   --color-success-50: #f0fdf4;
   --color-success-100: #dcfce7;
+  --color-success-400: #4ade80;
   --color-success-500: #22c55e;
   --color-success-600: #16a34a;
   --color-success-700: #15803d;
 
   --color-danger-50: #fef2f2;
   --color-danger-100: #fee2e2;
+  --color-danger-400: #f87171;
   --color-danger-500: #ef4444;
   --color-danger-600: #dc2626;
   --color-danger-700: #b91c1c;
 
   --color-warning-50: #fffbeb;
   --color-warning-100: #fef3c7;
+  --color-warning-400: #fbbf24;
   --color-warning-500: #f59e0b;
   --color-warning-600: #d97706;
 
   --color-sidebar: #0f172a;
   --color-sidebar-hover: #1e293b;
   --color-sidebar-active: #1e40af;
+
+  --color-page: var(--page-bg);
+  --color-card: var(--card-bg);
+  --color-card-alt: var(--card-alt-bg);
+  --color-input: var(--input-bg-val);
+  --color-heading: var(--heading-val);
+  --color-body: var(--body-val);
+  --color-muted: var(--muted-val);
+  --color-divider: var(--divider-val);
+  --color-divider-light: var(--divider-light-val);
+  --color-s-tint: var(--s-tint-val);
+  --color-s-tint-border: var(--s-tint-border-val);
+  --color-s-on-tint: var(--s-on-tint-val);
+  --color-d-tint: var(--d-tint-val);
+  --color-d-tint-border: var(--d-tint-border-val);
+  --color-d-on-tint: var(--d-on-tint-val);
+  --color-w-tint: var(--w-tint-val);
+  --color-w-tint-border: var(--w-tint-border-val);
+  --color-w-on-tint: var(--w-on-tint-val);
+  --color-p-tint: var(--p-tint-val);
+  --color-p-tint-border: var(--p-tint-border-val);
+  --color-p-on-tint: var(--p-on-tint-val);
 }
 
 * {
@@ -43,9 +122,10 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f1f5f9;
-  color: #1e293b;
+  background-color: var(--page-bg);
+  color: var(--heading-val);
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -61,12 +141,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
+  background-color: var(--muted-val);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #94a3b8;
+  background-color: var(--body-val);
 }
 
 @media print {

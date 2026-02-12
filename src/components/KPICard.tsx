@@ -14,24 +14,24 @@ interface KPICardProps {
 
 const colorMap = {
   blue: {
-    bg: 'bg-primary-50',
-    icon: 'text-primary-600',
-    ring: 'ring-primary-100',
+    bg: 'bg-p-tint',
+    icon: 'text-primary-600 dark:text-primary-400',
+    ring: 'ring-p-tint-border',
   },
   green: {
-    bg: 'bg-success-50',
-    icon: 'text-success-600',
-    ring: 'ring-success-100',
+    bg: 'bg-s-tint',
+    icon: 'text-success-600 dark:text-success-400',
+    ring: 'ring-s-tint-border',
   },
   red: {
-    bg: 'bg-danger-50',
-    icon: 'text-danger-600',
-    ring: 'ring-danger-100',
+    bg: 'bg-d-tint',
+    icon: 'text-danger-600 dark:text-danger-400',
+    ring: 'ring-d-tint-border',
   },
   amber: {
-    bg: 'bg-warning-50',
-    icon: 'text-warning-600',
-    ring: 'ring-warning-100',
+    bg: 'bg-w-tint',
+    icon: 'text-warning-600 dark:text-warning-400',
+    ring: 'ring-w-tint-border',
   },
 };
 
@@ -39,14 +39,14 @@ export default function KPICard({ title, value, subtitle, icon: Icon, color, tre
   const colors = colorMap[color];
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+    <div className="bg-card rounded-xl p-5 shadow-sm border border-divider-light hover:shadow-md transition-all">
       <div className="flex items-start justify-between">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-slate-500">{title}</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1 truncate">{value}</p>
-          {subtitle && <p className="text-xs text-slate-400 mt-1">{subtitle}</p>}
+          <p className="text-sm font-medium text-body">{title}</p>
+          <p className="text-2xl font-bold text-heading mt-1 truncate">{value}</p>
+          {subtitle && <p className="text-xs text-muted mt-1">{subtitle}</p>}
           {trend && (
-            <p className={`text-xs font-medium mt-2 ${trend.positive ? 'text-success-600' : 'text-danger-600'}`}>
+            <p className={`text-xs font-medium mt-2 ${trend.positive ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400'}`}>
               {trend.positive ? '+' : ''}{trend.value}
             </p>
           )}
