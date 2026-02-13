@@ -247,7 +247,6 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
               alt={beleg.name}
               className="max-w-full max-h-[90vh] rounded-lg shadow-2xl"
               onClick={e => e.stopPropagation()}
-              style={{ imageRendering: 'high-quality' }}
             />
 
             {/* Image info overlay */}
