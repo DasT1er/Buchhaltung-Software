@@ -35,18 +35,18 @@ export default function KPICard({ title, value, subtitle, icon: Icon, color }: K
   const g = gradients[color];
 
   return (
-    <div className="relative overflow-hidden bg-card rounded-2xl border border-divider-light p-5 transition-all duration-200 hover:border-divider" style={{ boxShadow: 'var(--card-shadow)' }}>
-      {/* Subtle glow in top-right */}
-      <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full ${g.glow} blur-2xl`} />
+    <div className="relative overflow-hidden glass rounded-lg p-3.5 group">
+      {/* Animated glow effect */}
+      <div className={`absolute -top-6 -right-6 w-20 h-20 rounded-full ${g.glow} blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
 
       <div className="relative flex items-start justify-between">
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-medium text-muted">{title}</p>
-          <p className="text-[26px] font-bold text-heading mt-1.5 tracking-tight truncate leading-none">{value}</p>
-          {subtitle && <p className="text-xs text-muted mt-2">{subtitle}</p>}
+          <p className="text-[10px] font-bold text-muted uppercase tracking-wider">{title}</p>
+          <p className="text-xl font-black text-heading mt-1 tracking-tight truncate leading-none">{value}</p>
+          {subtitle && <p className="text-[10px] text-muted mt-1.5">{subtitle}</p>}
         </div>
-        <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${g.icon} flex items-center justify-center shadow-lg ${g.shadow} shrink-0 ml-3`}>
-          <Icon size={20} className="text-white" />
+        <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${g.icon} flex items-center justify-center shadow-md ${g.shadow} shrink-0 ml-2 group-hover:scale-110 transition-transform duration-300`}>
+          <Icon size={16} className="text-white" />
         </div>
       </div>
     </div>

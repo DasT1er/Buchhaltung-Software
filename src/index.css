@@ -2,64 +2,96 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ─── Light palette ─── */
+/* ─── Glassmorphism Light Mode ─── */
 :root {
-  --page-bg: #f1f5f9;
-  --card-bg: #ffffff;
-  --card-alt-bg: #f8fafc;
-  --input-bg-val: #ffffff;
-  --heading-val: #0f172a;
-  --body-val: #475569;
-  --muted-val: #94a3b8;
-  --divider-val: #e2e8f0;
-  --divider-light-val: #f1f5f9;
+  /* Background - Gradient Mesh */
+  --page-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --page-mesh: radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 0.15) 0px, transparent 50%),
+               radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 0.1) 0px, transparent 50%),
+               radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 0.1) 0px, transparent 50%),
+               radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 0.15) 0px, transparent 50%);
 
-  --s-tint-val: #f0fdf4;
-  --s-tint-border-val: #bbf7d0;
+  /* Glass Cards */
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-alt-bg: rgba(255, 255, 255, 0.5);
+  --input-bg-val: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(255, 255, 255, 0.3);
+
+  /* Typography */
+  --heading-val: #1a202c;
+  --body-val: #4a5568;
+  --muted-val: #718096;
+  --divider-val: rgba(203, 213, 225, 0.6);
+  --divider-light-val: rgba(241, 245, 249, 0.4);
+
+  /* Tinted Glass Cards */
+  --s-tint-val: rgba(240, 253, 244, 0.8);
+  --s-tint-border-val: rgba(187, 247, 208, 0.5);
   --s-on-tint-val: #15803d;
-  --d-tint-val: #fef2f2;
-  --d-tint-border-val: #fecaca;
+  --d-tint-val: rgba(254, 242, 242, 0.8);
+  --d-tint-border-val: rgba(254, 202, 202, 0.5);
   --d-on-tint-val: #b91c1c;
-  --w-tint-val: #fffbeb;
-  --w-tint-border-val: #fde68a;
+  --w-tint-val: rgba(255, 251, 235, 0.8);
+  --w-tint-border-val: rgba(253, 230, 138, 0.5);
   --w-on-tint-val: #92400e;
-  --p-tint-val: #eef2ff;
-  --p-tint-border-val: #c7d2fe;
+  --p-tint-val: rgba(238, 242, 255, 0.8);
+  --p-tint-border-val: rgba(199, 210, 254, 0.5);
   --p-on-tint-val: #4338ca;
 
-  --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
-  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
-  --overlay-bg: rgba(15, 23, 42, 0.4);
+  /* Glassmorphism Shadows */
+  --card-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  --card-shadow-hover: 0 12px 40px rgba(31, 38, 135, 0.25);
+  --overlay-bg: rgba(15, 23, 42, 0.3);
+
+  /* Backdrop Blur */
+  --glass-blur: 16px;
+  --glass-border: 1px;
 }
 
-/* ─── Dark palette ─── */
+/* ─── Glassmorphism Dark Mode ─── */
 .dark {
-  --page-bg: #0c1222;
-  --card-bg: #152037;
-  --card-alt-bg: #1a2744;
-  --input-bg-val: #0f1829;
+  /* Background - Dark Gradient Mesh */
+  --page-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --page-mesh: radial-gradient(at 27% 37%, hsla(215, 58%, 21%, 0.3) 0px, transparent 50%),
+               radial-gradient(at 97% 21%, hsla(125, 48%, 32%, 0.2) 0px, transparent 50%),
+               radial-gradient(at 52% 99%, hsla(354, 48%, 31%, 0.2) 0px, transparent 50%),
+               radial-gradient(at 10% 29%, hsla(256, 46%, 37%, 0.3) 0px, transparent 50%);
+
+  /* Glass Cards */
+  --card-bg: rgba(30, 41, 59, 0.6);
+  --card-alt-bg: rgba(51, 65, 85, 0.4);
+  --input-bg-val: rgba(15, 23, 42, 0.7);
+  --card-border: rgba(148, 163, 184, 0.1);
+
+  /* Typography */
   --heading-val: #f1f5f9;
-  --body-val: #94a3b8;
-  --muted-val: #64748b;
-  --divider-val: #1e3050;
-  --divider-light-val: #182a48;
+  --body-val: #cbd5e1;
+  --muted-val: #94a3b8;
+  --divider-val: rgba(51, 65, 85, 0.5);
+  --divider-light-val: rgba(30, 41, 59, 0.4);
 
-  --s-tint-val: rgba(34, 197, 94, 0.1);
-  --s-tint-border-val: rgba(34, 197, 94, 0.2);
-  --s-on-tint-val: #4ade80;
-  --d-tint-val: rgba(239, 68, 68, 0.1);
-  --d-tint-border-val: rgba(239, 68, 68, 0.2);
-  --d-on-tint-val: #f87171;
-  --w-tint-val: rgba(245, 158, 11, 0.1);
-  --w-tint-border-val: rgba(245, 158, 11, 0.2);
-  --w-on-tint-val: #fbbf24;
-  --p-tint-val: rgba(99, 102, 241, 0.1);
-  --p-tint-border-val: rgba(99, 102, 241, 0.2);
-  --p-on-tint-val: #a5b4fc;
+  /* Tinted Glass Cards */
+  --s-tint-val: rgba(34, 197, 94, 0.15);
+  --s-tint-border-val: rgba(34, 197, 94, 0.25);
+  --s-on-tint-val: #86efac;
+  --d-tint-val: rgba(239, 68, 68, 0.15);
+  --d-tint-border-val: rgba(239, 68, 68, 0.25);
+  --d-on-tint-val: #fca5a5;
+  --w-tint-val: rgba(245, 158, 11, 0.15);
+  --w-tint-border-val: rgba(245, 158, 11, 0.25);
+  --w-on-tint-val: #fcd34d;
+  --p-tint-val: rgba(99, 102, 241, 0.15);
+  --p-tint-border-val: rgba(99, 102, 241, 0.25);
+  --p-on-tint-val: #c7d2fe;
 
-  --card-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1);
-  --card-shadow-hover: 0 8px 24px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15);
-  --overlay-bg: rgba(0, 0, 0, 0.6);
+  /* Glassmorphism Shadows */
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+
+  /* Backdrop Blur */
+  --glass-blur: 20px;
+  --glass-border: 1px;
 }
 
 @theme {
@@ -130,12 +162,40 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--page-bg);
+  background: var(--page-bg);
+  position: relative;
   color: var(--heading-val);
   min-height: 100vh;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: all 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--page-mesh);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Glassmorphism Card Base */
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border) solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-2px);
 }
 
 #root {

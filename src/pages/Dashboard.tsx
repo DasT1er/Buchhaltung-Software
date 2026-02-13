@@ -83,9 +83,9 @@ export default function Dashboard() {
     <>
       <Header title="Dashboard" subtitle={`Übersicht für ${geschaeftsjahr}`} onMenuClick={onMenuClick} />
 
-      <div className="p-5 sm:p-8 space-y-6">
+      <div className="p-4 sm:p-6 space-y-4">
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <KPICard title="Einnahmen" value={formatCurrency(gesamtEinnahmen)} subtitle={`${jahresEinnahmen.length} Buchungen`} icon={TrendingUp} color="green" />
           <KPICard title="Ausgaben" value={formatCurrency(gesamtAusgaben)} subtitle={`${jahresAusgaben.length} Buchungen`} icon={TrendingDown} color="red" />
           <KPICard title="Gewinn / Verlust" value={formatCurrency(gewinn)} subtitle="Einnahmen - Ausgaben" icon={Wallet} color={gewinn >= 0 ? 'blue' : 'red'} />
@@ -93,9 +93,9 @@ export default function Dashboard() {
         </div>
 
         {/* Charts Row 1 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div className="bg-card rounded-2xl p-5 border border-divider-light transition-colors" style={{ boxShadow: 'var(--card-shadow)' }}>
-            <h3 className="text-sm font-semibold text-heading mb-4">Monatsübersicht</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div className="glass rounded-xl p-4">
+            <h3 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Monatsübersicht</h3>
             <div className="h-64">
               {hasData ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -112,9 +112,9 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-card rounded-2xl p-5 border border-divider-light transition-colors" style={{ boxShadow: 'var(--card-shadow)' }}>
-            <h3 className="text-sm font-semibold text-heading mb-4">Kumulativer Verlauf</h3>
-            <div className="h-64">
+          <div className="glass rounded-xl p-4">
+            <h3 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Kumulativer Verlauf</h3>
+            <div className="h-60">
               {hasData ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={kumulativDaten} margin={{ top: 5, right: 5, left: -10, bottom: 5 }}>
@@ -133,10 +133,10 @@ export default function Dashboard() {
         </div>
 
         {/* Charts Row 2 - Pie Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div className="bg-card rounded-2xl p-5 border border-divider-light transition-colors" style={{ boxShadow: 'var(--card-shadow)' }}>
-            <h3 className="text-sm font-semibold text-heading mb-4">Einnahmen nach Kategorie</h3>
-            <div className="h-64">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div className="glass rounded-xl p-4">
+            <h3 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Einnahmen nach Kategorie</h3>
+            <div className="h-60">
               {einnahmenByKat.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -151,9 +151,9 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-card rounded-2xl p-5 border border-divider-light transition-colors" style={{ boxShadow: 'var(--card-shadow)' }}>
-            <h3 className="text-sm font-semibold text-heading mb-4">Ausgaben nach Kategorie</h3>
-            <div className="h-64">
+          <div className="glass rounded-xl p-4">
+            <h3 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Ausgaben nach Kategorie</h3>
+            <div className="h-60">
               {ausgabenByKat.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -170,7 +170,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Lists */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <RecentList title="Letzte Einnahmen" items={letzte5Einnahmen} type="einnahme" />
           <RecentList title="Letzte Ausgaben" items={letzte5Ausgaben} type="ausgabe" />
         </div>
@@ -181,27 +181,27 @@ export default function Dashboard() {
 
 function RecentList({ title, items, type }: { title: string; items: (Einnahme | Ausgabe)[]; type: 'einnahme' | 'ausgabe' }) {
   return (
-    <div className="bg-card rounded-2xl border border-divider-light overflow-hidden transition-colors" style={{ boxShadow: 'var(--card-shadow)' }}>
-      <div className="px-5 py-4 border-b border-divider-light">
-        <h3 className="text-sm font-semibold text-heading">{title}</h3>
+    <div className="glass rounded-xl overflow-hidden">
+      <div className="px-4 py-3 border-b border-divider">
+        <h3 className="text-xs font-bold text-heading uppercase tracking-wide">{title}</h3>
       </div>
       {items.length > 0 ? (
-        <ul className="divide-y divide-divider-light">
+        <ul className="divide-y divide-divider">
           {items.map(item => (
-            <li key={item.id} className="px-5 py-3.5 flex items-center justify-between hover:bg-card-alt transition-colors">
+            <li key={item.id} className="px-4 py-2.5 flex items-center justify-between hover:bg-card-alt/40 transition-colors">
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-heading truncate">{item.beschreibung}</p>
-                <p className="text-xs text-muted mt-0.5">{new Intl.DateTimeFormat('de-DE').format(new Date(item.datum))}</p>
+                <p className="text-xs font-medium text-heading truncate">{item.beschreibung}</p>
+                <p className="text-[10px] text-muted mt-0.5">{new Intl.DateTimeFormat('de-DE').format(new Date(item.datum))}</p>
               </div>
-              <span className={`text-sm font-semibold ml-3 whitespace-nowrap ${type === 'einnahme' ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400'}`}>
+              <span className={`text-xs font-bold ml-3 whitespace-nowrap ${type === 'einnahme' ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400'}`}>
                 {type === 'einnahme' ? '+' : '-'}{formatCurrency(item.betrag)}
               </span>
             </li>
           ))}
         </ul>
       ) : (
-        <div className="px-5 py-10 text-center">
-          <p className="text-sm text-muted">Noch keine Buchungen vorhanden</p>
+        <div className="px-4 py-8 text-center">
+          <p className="text-xs text-muted">Noch keine Buchungen vorhanden</p>
         </div>
       )}
     </div>
