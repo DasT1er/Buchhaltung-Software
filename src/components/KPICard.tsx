@@ -6,53 +6,47 @@ interface KPICardProps {
   subtitle?: string;
   icon: LucideIcon;
   color: 'blue' | 'green' | 'red' | 'amber';
-  trend?: {
-    value: string;
-    positive: boolean;
-  };
 }
 
-const colorMap = {
+const gradients = {
   blue: {
-    bg: 'bg-primary-50',
-    icon: 'text-primary-600',
-    ring: 'ring-primary-100',
+    icon: 'from-primary-500 to-primary-700',
+    shadow: 'shadow-primary-500/25',
+    glow: 'bg-primary-500/10 dark:bg-primary-500/5',
   },
   green: {
-    bg: 'bg-success-50',
-    icon: 'text-success-600',
-    ring: 'ring-success-100',
+    icon: 'from-emerald-500 to-emerald-700',
+    shadow: 'shadow-emerald-500/25',
+    glow: 'bg-emerald-500/10 dark:bg-emerald-500/5',
   },
   red: {
-    bg: 'bg-danger-50',
-    icon: 'text-danger-600',
-    ring: 'ring-danger-100',
+    icon: 'from-rose-500 to-rose-700',
+    shadow: 'shadow-rose-500/25',
+    glow: 'bg-rose-500/10 dark:bg-rose-500/5',
   },
   amber: {
-    bg: 'bg-warning-50',
-    icon: 'text-warning-600',
-    ring: 'ring-warning-100',
+    icon: 'from-amber-500 to-amber-600',
+    shadow: 'shadow-amber-500/25',
+    glow: 'bg-amber-500/10 dark:bg-amber-500/5',
   },
 };
 
-export default function KPICard({ title, value, subtitle, icon: Icon, color, trend }: KPICardProps) {
-  const colors = colorMap[color];
+export default function KPICard({ title, value, subtitle, icon: Icon, color }: KPICardProps) {
+  const g = gradients[color];
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between">
+    <div className="relative overflow-hidden bg-card rounded-2xl border border-divider-light p-5 transition-all duration-200 hover:border-divider" style={{ boxShadow: 'var(--card-shadow)' }}>
+      {/* Subtle glow in top-right */}
+      <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full ${g.glow} blur-2xl`} />
+
+      <div className="relative flex items-start justify-between">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-slate-500">{title}</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1 truncate">{value}</p>
-          {subtitle && <p className="text-xs text-slate-400 mt-1">{subtitle}</p>}
-          {trend && (
-            <p className={`text-xs font-medium mt-2 ${trend.positive ? 'text-success-600' : 'text-danger-600'}`}>
-              {trend.positive ? '+' : ''}{trend.value}
-            </p>
-          )}
+          <p className="text-[13px] font-medium text-muted">{title}</p>
+          <p className="text-[26px] font-bold text-heading mt-1.5 tracking-tight truncate leading-none">{value}</p>
+          {subtitle && <p className="text-xs text-muted mt-2">{subtitle}</p>}
         </div>
-        <div className={`${colors.bg} ${colors.ring} ring-4 p-3 rounded-xl`}>
-          <Icon size={22} className={colors.icon} />
+        <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${g.icon} flex items-center justify-center shadow-lg ${g.shadow} shrink-0 ml-3`}>
+          <Icon size={20} className="text-white" />
         </div>
       </div>
     </div>

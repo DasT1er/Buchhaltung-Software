@@ -1,3 +1,10 @@
+export interface BelegMeta {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+}
+
 export interface Einnahme {
   id: string;
   datum: string;
@@ -8,6 +15,7 @@ export interface Einnahme {
   rechnungsnummer?: string;
   zahlungsart: Zahlungsart;
   notizen?: string;
+  belege?: BelegMeta[];
 }
 
 export interface Ausgabe {
@@ -19,6 +27,7 @@ export interface Ausgabe {
   belegnummer?: string;
   zahlungsart: Zahlungsart;
   notizen?: string;
+  belege?: BelegMeta[];
 }
 
 export interface Kunde {
