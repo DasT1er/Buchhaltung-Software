@@ -47,6 +47,43 @@ export function exportFahrtenCSV(fahrten: Fahrt[]): void {
   downloadCSV('Fahrtenbuch', headers, rows);
 }
 
+/**
+ * Exportiert Fahrtkosten mit Kilometerpauschale (0,30 €/km) für das Finanzamt
+ */
+export function exportFahrkostenFinanzamtCSV(fahrten: Fahrt[], jahr: number): void {
+  const PAUSCHALE_PRO_KM = 0.30;
+
+  const headers = ['Datum', 'Route (Start → Ziel)', 'Kilometer', 'Pauschale/km', 'Betrag (EUR)', 'Zweck', 'Kunde'];
+  const rows = fahrten.map(f => {
+    const betrag = f.kilometer * PAUSCHALE_PRO_KM;
+    return [
+      formatDate(f.datum),
+      `${f.startort} → ${f.zielort}`,
+      f.kilometer.toString().replace('.', ','),
+      '0,30 €',
+      betrag.toFixed(2).replace('.', ',') + ' €',
+      f.zweck,
+      f.kunde ?? '',
+    ];
+  });
+
+  // Summenzeile
+  const gesamtKm = fahrten.reduce((sum, f) => sum + f.kilometer, 0);
+  const gesamtBetrag = gesamtKm * PAUSCHALE_PRO_KM;
+  rows.push(['', '', '', '', '', '', '']);
+  rows.push([
+    'SUMME',
+    `${fahrten.length} Fahrten`,
+    gesamtKm.toString().replace('.', ',') + ' km',
+    '0,30 €',
+    gesamtBetrag.toFixed(2).replace('.', ',') + ' €',
+    '',
+    '',
+  ]);
+
+  downloadCSV(`Fahrtkosten_Finanzamt_${jahr}`, headers, rows);
+}
+
 export function exportEURBerichtCSV(
   einnahmen: Einnahme[],
   ausgaben: Ausgabe[],

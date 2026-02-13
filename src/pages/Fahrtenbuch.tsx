@@ -7,7 +7,7 @@ import Modal from '../components/Modal';
 import DeleteConfirm from '../components/DeleteConfirm';
 import { useStore } from '../store/useStore';
 import { formatDate } from '../utils/formatters';
-import { exportFahrtenCSV } from '../utils/exportUtils';
+import { exportFahrtenCSV, exportFahrkostenFinanzamtCSV } from '../utils/exportUtils';
 import type { Fahrt } from '../types';
 
 const inputCls = 'w-full px-3 py-2 text-sm glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
@@ -52,8 +52,11 @@ export default function Fahrtenbuch() {
         onMenuClick={onMenuClick}
         actions={
           <div className="flex gap-2">
-            <button onClick={() => exportFahrtenCSV(filtered)} className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold glass rounded-lg hover:bg-card-alt/40 transition-colors">
-              <Download size={13} />CSV
+            <button onClick={() => exportFahrtenCSV(filtered)} className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold glass rounded-lg hover:bg-card-alt/40 transition-colors">
+              <Download size={13} />Fahrtenbuch
+            </button>
+            <button onClick={() => exportFahrkostenFinanzamtCSV(filtered, geschaeftsjahr)} className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-br from-success-500 to-success-700 rounded-lg hover:shadow-lg hover:shadow-success-500/30 transition-all">
+              <Download size={13} />Finanzamt
             </button>
             <button onClick={openNew} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg hover:shadow-lg hover:shadow-primary-500/30 transition-all">
               <Plus size={14} /><span className="hidden sm:inline">Neue Fahrt</span>
@@ -79,10 +82,15 @@ export default function Fahrtenbuch() {
           <span className="text-lg font-black text-p-on-tint">{gesamtKm.toLocaleString('de-DE')} km</span>
         </div>
 
-        <div className="glass rounded-lg p-2.5">
-          <p className="text-xs text-w-on-tint leading-relaxed">
-            <strong>Tipp:</strong> Die Kilometerpauschale beträgt 0,30 EUR/km (ab dem 21. km: 0,38 EUR/km bei Entfernungspauschale).
-            Bei geschäftlichen Fahrten mit eigenem PKW können Sie {gesamtKm > 0 ? `bis zu ${(gesamtKm * 0.30).toFixed(2).replace('.', ',')} EUR` : 'die tatsächlichen Kosten oder die Pauschale'} als Betriebsausgabe geltend machen.
+        <div className="glass rounded-lg p-2.5 bg-gradient-to-br from-success-500/10 to-success-700/10 border-l-4 border-success-500">
+          <p className="text-xs text-s-on-tint leading-relaxed">
+            <strong>💡 Kilometerpauschale für Kleinunternehmer:</strong> 0,30 €/km für betriebliche Fahrten.
+            {gesamtKm > 0 && (
+              <span className="block mt-1 font-bold">
+                📊 Absetzbar: {gesamtKm.toLocaleString('de-DE')} km × 0,30 € = {(gesamtKm * 0.30).toFixed(2).replace('.', ',')} €
+                <span className="ml-2 text-[10px] font-normal opacity-75">(Export: Button "Finanzamt")</span>
+              </span>
+            )}
           </p>
         </div>
 
