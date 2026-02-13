@@ -4,18 +4,44 @@ const fs = require('fs');
 
 // PORTABLE DATA PATH - next to the EXE!
 const isPackaged = app.isPackaged;
-const userDataPath = isPackaged
-  ? path.join(path.dirname(app.getPath('exe')), 'data')
-  : path.join(app.getAppPath(), 'data');
+
+// Find the correct portable path
+let portableRoot;
+if (isPackaged) {
+  // Try to find the executable directory
+  const execDir = path.dirname(process.execPath);
+
+  // Check if we're in a resources/app folder (extracted portable)
+  if (execDir.includes('resources')) {
+    // Go up to the root folder (where the EXE was double-clicked)
+    portableRoot = execDir.split('resources')[0];
+  } else {
+    // Direct portable mode - data next to EXE
+    portableRoot = execDir;
+  }
+} else {
+  // Development mode
+  portableRoot = app.getAppPath();
+}
+
+const userDataPath = path.join(portableRoot, 'data');
 
 // Ensure data directories exist
 const belegeDir = path.join(userDataPath, 'belege');
 if (!fs.existsSync(userDataPath)) {
   fs.mkdirSync(userDataPath, { recursive: true });
+  console.log('✅ Created data folder:', userDataPath);
 }
 if (!fs.existsSync(belegeDir)) {
   fs.mkdirSync(belegeDir, { recursive: true });
+  console.log('✅ Created belege folder:', belegeDir);
 }
+
+// Log wichtige Pfade für Debugging
+console.log('🚀 BuchungsProfi gestartet!');
+console.log('📁 Data Pfad:', userDataPath);
+console.log('💾 EXE Pfad:', process.execPath);
+console.log('📦 App Pfad:', app.getAppPath());
 
 // IPC HANDLERS - File System Operations
 
