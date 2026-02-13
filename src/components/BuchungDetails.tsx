@@ -122,9 +122,22 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
   const [url, setUrl] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
 
+  // FIX: Prevent flickering by properly cleaning up blob URLs
   useEffect(() => {
-    getFileUrl(beleg.id).then(setUrl);
-    return () => { if (url) URL.revokeObjectURL(url); };
+    let objectUrl: string | null = null;
+
+    getFileUrl(beleg.id).then(u => {
+      if (u) {
+        objectUrl = u;
+        setUrl(u);
+      }
+    });
+
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
   }, [beleg.id]);
 
   const isImage = beleg.type.startsWith('image/');
@@ -153,54 +166,96 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
 
   return (
     <>
-      <div className="flex items-center gap-2.5 px-3 py-2 bg-card-alt rounded-lg hover:bg-card-alt/70 transition-colors">
-        <div className={`w-8 h-8 rounded-md ${isImage ? 'bg-s-tint/80' : 'bg-p-tint/80'} flex items-center justify-center shrink-0`}>
-          {isImage ? (
-            <ImageIcon size={14} className="text-s-on-tint" />
+      <div className="flex items-start gap-3 p-3 bg-card-alt rounded-lg hover:bg-card-alt/70 transition-all group">
+        {/* LARGER Preview Thumbnail */}
+        <div
+          className={`relative rounded-lg overflow-hidden shrink-0 cursor-pointer transition-all ${
+            isImage ? 'w-20 h-20 hover:scale-105' : 'w-12 h-12'
+          }`}
+          onClick={handleView}
+        >
+          {isImage && url ? (
+            <img
+              src={url}
+              alt={beleg.name}
+              className="w-full h-full object-cover"
+            />
           ) : (
-            <FileText size={14} className="text-p-on-tint" />
+            <div className={`w-full h-full ${isImage ? 'bg-s-tint/80' : 'bg-p-tint/80'} flex items-center justify-center`}>
+              {isImage ? (
+                <ImageIcon size={20} className="text-s-on-tint" />
+              ) : (
+                <FileText size={20} className="text-p-on-tint" />
+              )}
+            </div>
+          )}
+
+          {/* Hover overlay for images */}
+          {isImage && (
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100">
+              <Eye size={20} className="text-white" />
+            </div>
           )}
         </div>
+
+        {/* File info */}
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-semibold text-heading truncate">{beleg.name}</p>
-          <p className="text-[10px] text-muted">{formatSize(beleg.size)}</p>
+          <p className="text-sm font-semibold text-heading truncate">{beleg.name}</p>
+          <p className="text-xs text-muted mt-0.5">{formatSize(beleg.size)}</p>
+          {isImage && (
+            <p className="text-xs text-primary-600 dark:text-primary-400 mt-1 font-medium">
+              Klicken für Vollansicht
+            </p>
+          )}
         </div>
-        <div className="flex gap-1 shrink-0">
+
+        {/* Action buttons */}
+        <div className="flex flex-col gap-1 shrink-0">
           <button
             onClick={handleView}
-            className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint rounded-md transition-colors"
+            className="p-2 text-muted hover:text-primary-600 hover:bg-p-tint rounded-md transition-colors"
             title={isImage ? "Vorschau" : "Öffnen"}
           >
-            <Eye size={14} />
+            <Eye size={16} />
           </button>
           <button
             onClick={handleDownload}
-            className="p-1.5 text-muted hover:text-success-600 hover:bg-s-tint rounded-md transition-colors"
+            className="p-2 text-muted hover:text-success-600 hover:bg-s-tint rounded-md transition-colors"
             title="Download"
           >
-            <Download size={14} />
+            <Download size={16} />
           </button>
         </div>
       </div>
 
-      {/* Image Preview Modal */}
+      {/* Image Preview Modal - LARGER AND SMOOTHER */}
       {showPreview && url && isImage && (
         <div
-          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in duration-200"
           onClick={() => setShowPreview(false)}
         >
           <button
             onClick={() => setShowPreview(false)}
-            className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-full transition-colors"
+            className="absolute top-6 right-6 p-3 text-white hover:bg-white/20 rounded-full transition-all hover:scale-110 z-10"
           >
-            <X size={24} />
+            <X size={28} />
           </button>
-          <img
-            src={url}
-            alt={beleg.name}
-            className="max-w-full max-h-full rounded-lg shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          />
+
+          <div className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-300">
+            <img
+              src={url}
+              alt={beleg.name}
+              className="max-w-full max-h-[90vh] rounded-lg shadow-2xl"
+              onClick={e => e.stopPropagation()}
+              style={{ imageRendering: 'high-quality' }}
+            />
+
+            {/* Image info overlay */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b-lg">
+              <p className="text-white font-semibold text-sm truncate">{beleg.name}</p>
+              <p className="text-white/70 text-xs">{formatSize(beleg.size)}</p>
+            </div>
+          </div>
         </div>
       )}
     </>
