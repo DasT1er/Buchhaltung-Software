@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Modal from '../components/Modal';
 import DeleteConfirm from '../components/DeleteConfirm';
 import BelegeUpload from '../components/BelegeUpload';
+import BuchungDetails from '../components/BuchungDetails';
 import { useStore } from '../store/useStore';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { ausgabeKategorien, zahlungsarten, getAusgabeKategorieLabel, getZahlungsartLabel } from '../utils/categories';
@@ -24,6 +25,7 @@ export default function Ausgaben() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [filterKat, setFilterKat] = useState<string>('');
+  const [detailsItem, setDetailsItem] = useState<Ausgabe | null>(null);
 
   const jahresAusgaben = useMemo(
     () => ausgaben
@@ -131,7 +133,11 @@ export default function Ausgaben() {
               </thead>
               <tbody className="divide-y divide-divider/30">
                 {filtered.map(item => (
-                  <tr key={item.id} className="hover:bg-card-alt/30 transition-colors">
+                  <tr
+                    key={item.id}
+                    className="hover:bg-card-alt/30 transition-colors cursor-pointer"
+                    onClick={() => setDetailsItem(item)}
+                  >
                     <td className="px-4 py-2 text-sm text-body whitespace-nowrap">{formatDate(item.datum)}</td>
                     <td className="px-4 py-2">
                       <div>
@@ -157,10 +163,16 @@ export default function Ausgaben() {
                     </td>
                     <td className="px-4 py-2 text-right">
                       <div className="flex justify-end gap-0.5">
-                        <button onClick={() => openEdit(item)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); openEdit(item); }}
+                          className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm"
+                        >
                           <Edit2 size={15} />
                         </button>
-                        <button onClick={() => setDeleteId(item.id)} className="p-1.5 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setDeleteId(item.id); }}
+                          className="p-1.5 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm"
+                        >
                           <Trash2 size={15} />
                         </button>
                       </div>
@@ -188,6 +200,7 @@ export default function Ausgaben() {
 
       <AusgabeModal isOpen={showModal} onClose={() => setShowModal(false)} onSave={handleSave} initial={editItem} />
       <DeleteConfirm isOpen={deleteId !== null} onClose={() => setDeleteId(null)} onConfirm={() => deleteId && deleteAusgabe(deleteId)} />
+      <BuchungDetails isOpen={detailsItem !== null} onClose={() => setDetailsItem(null)} data={detailsItem} type="ausgabe" />
     </>
   );
 }
