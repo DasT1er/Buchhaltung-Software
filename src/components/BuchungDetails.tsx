@@ -47,7 +47,7 @@ export default function BuchungDetails({ isOpen, onClose, data, type }: Props) {
           <DetailItem
             icon={Tag}
             label="Kategorie"
-            value={isEinnahme ? getEinnahmeKategorieLabel(data.kategorie) : getAusgabeKategorieLabel(data.kategorie)}
+            value={isEinnahme ? getEinnahmeKategorieLabel(einnahme!.kategorie) : getAusgabeKategorieLabel(ausgabe!.kategorie)}
           />
           <DetailItem icon={CreditCard} label="Zahlungsart" value={getZahlungsartLabel(data.zahlungsart)} />
 
