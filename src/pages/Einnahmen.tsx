@@ -12,8 +12,8 @@ import { einnahmeKategorien, zahlungsarten, getEinnahmeKategorieLabel, getZahlun
 import { exportEinnahmenCSV } from '../utils/exportUtils';
 import type { Einnahme, EinnahmeKategorie, Zahlungsart, BelegMeta } from '../types';
 
-const inputCls = 'w-full px-3 py-2.5 text-sm bg-input border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors';
-const labelCls = 'block text-[13px] font-medium text-heading mb-1.5';
+const inputCls = 'w-full px-3 py-2 text-xs glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
+const labelCls = 'block text-[10px] font-bold text-heading mb-1 uppercase tracking-wide';
 
 export default function Einnahmen() {
   const { onMenuClick } = useOutletContext<{ onMenuClick: () => void }>();
@@ -66,44 +66,44 @@ export default function Einnahmen() {
     <>
       <Header
         title="Einnahmen"
-        subtitle={`${geschaeftsjahr} \u2022 ${filtered.length} Eintr\u00e4ge`}
+        subtitle={`${geschaeftsjahr} • ${filtered.length} Einträge`}
         onMenuClick={onMenuClick}
         actions={
           <div className="flex gap-2">
             <button
               onClick={() => exportEinnahmenCSV(filtered)}
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-body bg-card-alt border border-divider rounded-xl hover:bg-divider-light transition-colors"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold glass rounded-lg hover:bg-card-alt/40 transition-colors"
             >
-              <Download size={15} />
+              <Download size={13} />
               CSV
             </button>
             <button
               onClick={openNew}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-success-600 rounded-xl hover:bg-success-700 transition-colors shadow-sm shadow-success-600/20"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-br from-success-500 to-success-700 rounded-lg hover:shadow-lg hover:shadow-success-500/30 transition-all"
             >
-              <Plus size={16} />
+              <Plus size={14} />
               <span className="hidden sm:inline">Neue Einnahme</span>
             </button>
           </div>
         }
       />
 
-      <div className="p-5 sm:p-8 space-y-5">
-        <div className="flex flex-col sm:flex-row gap-3">
+      <div className="p-4 sm:p-6 space-y-3">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
             <input
               type="text"
               placeholder="Suchen..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors"
+              className="glass w-full pl-9 pr-3 py-2 text-xs rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all"
             />
           </div>
           <select
             value={filterKat}
             onChange={e => setFilterKat(e.target.value)}
-            className="px-3 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 text-heading transition-colors"
+            className="glass px-3 py-2 text-xs rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all"
           >
             <option value="">Alle Kategorien</option>
             {einnahmeKategorien.map(k => (
@@ -112,57 +112,57 @@ export default function Einnahmen() {
           </select>
         </div>
 
-        <div className="bg-s-tint border border-s-tint-border rounded-2xl p-4 flex items-center justify-between">
-          <span className="text-sm font-medium text-s-on-tint">Gesamt ({filtered.length} Eintr\u00e4ge)</span>
-          <span className="text-lg font-bold text-s-on-tint">{formatCurrency(gesamt)}</span>
+        <div className="glass rounded-lg p-3 flex items-center justify-between">
+          <span className="text-xs font-bold text-s-on-tint uppercase tracking-wide">Gesamt ({filtered.length})</span>
+          <span className="text-base font-black text-s-on-tint">{formatCurrency(gesamt)}</span>
         </div>
 
-        <div className="bg-card rounded-2xl border border-divider-light overflow-hidden transition-colors" style={{ boxShadow: 'var(--card-shadow)' }}>
+        <div className="glass rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-divider bg-card-alt/50">
-                  <th className="text-left px-6 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Datum</th>
-                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Beschreibung</th>
-                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider hidden md:table-cell">Kategorie</th>
-                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider hidden lg:table-cell">Zahlung</th>
-                  <th className="text-right px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Betrag</th>
-                  <th className="text-right px-6 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider w-24"></th>
+                <tr className="border-b border-divider/50 bg-card-alt/30">
+                  <th className="text-left px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Datum</th>
+                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Beschreibung</th>
+                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider hidden md:table-cell">Kategorie</th>
+                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider hidden lg:table-cell">Zahlung</th>
+                  <th className="text-right px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Betrag</th>
+                  <th className="text-right px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider w-20"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-divider-light">
+              <tbody className="divide-y divide-divider/30">
                 {filtered.map(item => (
-                  <tr key={item.id} className="hover:bg-card-alt/50 transition-colors">
-                    <td className="px-6 py-3.5 text-body whitespace-nowrap">{formatDate(item.datum)}</td>
-                    <td className="px-5 py-3.5">
+                  <tr key={item.id} className="hover:bg-card-alt/30 transition-colors">
+                    <td className="px-4 py-2.5 text-xs text-body whitespace-nowrap">{formatDate(item.datum)}</td>
+                    <td className="px-3 py-2.5">
                       <div>
-                        <p className="font-medium text-heading">{item.beschreibung}</p>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          {item.rechnungsnummer && <p className="text-xs text-muted">Re.Nr.: {item.rechnungsnummer}</p>}
+                        <p className="text-xs font-semibold text-heading">{item.beschreibung}</p>
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          {item.rechnungsnummer && <p className="text-[10px] text-muted">Re.Nr.: {item.rechnungsnummer}</p>}
                           {item.belege && item.belege.length > 0 && (
-                            <span className="inline-flex items-center gap-0.5 text-xs text-primary-600 dark:text-primary-400">
-                              <Paperclip size={11} />{item.belege.length}
+                            <span className="inline-flex items-center gap-0.5 text-[10px] text-primary-600 dark:text-primary-400">
+                              <Paperclip size={9} />{item.belege.length}
                             </span>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 hidden md:table-cell">
-                      <span className="inline-flex px-2.5 py-1 text-xs font-medium bg-p-tint text-p-on-tint rounded-lg">
+                    <td className="px-3 py-2.5 hidden md:table-cell">
+                      <span className="inline-flex px-2 py-0.5 text-[10px] font-bold bg-p-tint/80 text-p-on-tint rounded-md backdrop-blur-sm">
                         {getEinnahmeKategorieLabel(item.kategorie)}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 text-muted hidden lg:table-cell">{getZahlungsartLabel(item.zahlungsart)}</td>
-                    <td className="px-5 py-3.5 text-right font-semibold text-success-600 dark:text-success-400 whitespace-nowrap">
+                    <td className="px-3 py-2.5 text-[11px] text-muted hidden lg:table-cell">{getZahlungsartLabel(item.zahlungsart)}</td>
+                    <td className="px-3 py-2.5 text-right text-xs font-bold text-success-600 dark:text-success-400 whitespace-nowrap">
                       +{formatCurrency(item.betrag)}
                     </td>
-                    <td className="px-6 py-3.5 text-right">
-                      <div className="flex justify-end gap-1">
-                        <button onClick={() => openEdit(item)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint rounded-lg transition-colors">
-                          <Edit2 size={15} />
+                    <td className="px-4 py-2.5 text-right">
+                      <div className="flex justify-end gap-0.5">
+                        <button onClick={() => openEdit(item)} className="p-1 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm">
+                          <Edit2 size={13} />
                         </button>
-                        <button onClick={() => setDeleteId(item.id)} className="p-1.5 text-muted hover:text-danger-600 hover:bg-d-tint rounded-lg transition-colors">
-                          <Trash2 size={15} />
+                        <button onClick={() => setDeleteId(item.id)} className="p-1 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm">
+                          <Trash2 size={13} />
                         </button>
                       </div>
                     </td>
@@ -190,11 +190,11 @@ export default function Einnahmen() {
 function TrendingUpEmpty() {
   return (
     <div>
-      <div className="w-12 h-12 mx-auto rounded-2xl bg-card-alt flex items-center justify-center mb-3">
+      <div className="w-12 h-12 mx-auto rounded-2xl glass flex items-center justify-center mb-3">
         <Plus size={20} className="text-muted" />
       </div>
       <p className="text-sm font-medium text-muted">Keine Einnahmen gefunden</p>
-      <p className="text-xs text-muted mt-1">Klicke auf &quot;Neue Einnahme&quot; um zu beginnen</p>
+      <p className="text-xs text-muted mt-1">Klicke auf "Neue Einnahme" um zu beginnen</p>
     </div>
   );
 }
@@ -247,8 +247,8 @@ function EinnahmeModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={initial ? 'Einnahme bearbeiten' : 'Neue Einnahme'} maxWidth="max-w-xl">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>Datum *</label>
             <input type="date" value={datum} onChange={e => setDatum(e.target.value)} className={inputCls} required />
@@ -264,7 +264,7 @@ function EinnahmeModal({
           <input type="text" value={beschreibung} onChange={e => setBeschreibung(e.target.value)} placeholder="z.B. Transportauftrag Berlin-Hamburg" className={inputCls} required />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>Kategorie</label>
             <select value={kategorie} onChange={e => setKategorie(e.target.value as EinnahmeKategorie)} className={inputCls}>
@@ -279,7 +279,7 @@ function EinnahmeModal({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>Rechnungsnummer</label>
             <input type="text" value={rechnungsnummer} onChange={e => setRechnungsnummer(e.target.value)} placeholder="RE-2026-001" className={inputCls} />
@@ -300,12 +300,12 @@ function EinnahmeModal({
 
         <BelegeUpload belege={belege} onChange={setBelege} />
 
-        <div className="flex justify-end gap-3 pt-3 border-t border-divider-light">
-          <button type="button" onClick={onClose} className="px-4 py-2.5 text-sm font-medium text-heading bg-card-alt border border-divider rounded-xl hover:bg-divider-light transition-colors">
+        <div className="flex justify-end gap-2 pt-3 border-t border-divider/50">
+          <button type="button" onClick={onClose} className="px-4 py-2 text-xs font-bold text-heading glass rounded-lg hover:bg-card-alt/40 transition-colors">
             Abbrechen
           </button>
-          <button type="submit" className="px-5 py-2.5 text-sm font-medium text-white bg-primary-600 rounded-xl hover:bg-primary-700 transition-colors shadow-sm shadow-primary-600/20">
-            {initial ? 'Speichern' : 'Hinzuf\u00fcgen'}
+          <button type="submit" className="px-5 py-2 text-xs font-bold text-white bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg hover:shadow-lg hover:shadow-primary-500/30 transition-all">
+            {initial ? 'Speichern' : 'Hinzufügen'}
           </button>
         </div>
       </form>
