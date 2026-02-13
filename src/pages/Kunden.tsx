@@ -55,13 +55,13 @@ export default function Kunden() {
 
       <div className="p-5 sm:p-8 space-y-5">
         <div className="relative">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
           <input
             type="text"
             placeholder="Kunden suchen..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors"
+            className="w-full pl-11 pr-4 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors"
           />
         </div>
 

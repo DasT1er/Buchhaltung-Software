@@ -91,13 +91,13 @@ export default function Einnahmen() {
       <div className="p-5 sm:p-8 space-y-5">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
             <input
               type="text"
               placeholder="Suchen..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors"
+              className="w-full pl-11 pr-4 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors"
             />
           </div>
           <select
@@ -122,18 +122,18 @@ export default function Einnahmen() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-divider bg-card-alt/50">
-                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Datum</th>
+                  <th className="text-left px-6 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Datum</th>
                   <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Beschreibung</th>
                   <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider hidden md:table-cell">Kategorie</th>
                   <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider hidden lg:table-cell">Zahlung</th>
                   <th className="text-right px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Betrag</th>
-                  <th className="text-right px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider w-24"></th>
+                  <th className="text-right px-6 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider w-24"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-divider-light">
                 {filtered.map(item => (
                   <tr key={item.id} className="hover:bg-card-alt/50 transition-colors">
-                    <td className="px-5 py-3.5 text-body whitespace-nowrap">{formatDate(item.datum)}</td>
+                    <td className="px-6 py-3.5 text-body whitespace-nowrap">{formatDate(item.datum)}</td>
                     <td className="px-5 py-3.5">
                       <div>
                         <p className="font-medium text-heading">{item.beschreibung}</p>
@@ -156,7 +156,7 @@ export default function Einnahmen() {
                     <td className="px-5 py-3.5 text-right font-semibold text-success-600 dark:text-success-400 whitespace-nowrap">
                       +{formatCurrency(item.betrag)}
                     </td>
-                    <td className="px-5 py-3.5 text-right">
+                    <td className="px-6 py-3.5 text-right">
                       <div className="flex justify-end gap-1">
                         <button onClick={() => openEdit(item)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint rounded-lg transition-colors">
                           <Edit2 size={15} />

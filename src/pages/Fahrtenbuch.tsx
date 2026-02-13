@@ -64,9 +64,9 @@ export default function Fahrtenbuch() {
 
       <div className="p-5 sm:p-8 space-y-5">
         <div className="relative">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
           <input type="text" placeholder="Fahrten suchen..." value={search} onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors" />
+            className="w-full pl-11 pr-4 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors" />
         </div>
 
         <div className="bg-p-tint border border-p-tint-border rounded-2xl p-4 flex items-center justify-between">
@@ -91,18 +91,18 @@ export default function Fahrtenbuch() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-divider bg-card-alt/50">
-                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Datum</th>
+                  <th className="text-left px-6 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Datum</th>
                   <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Route</th>
                   <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider hidden md:table-cell">Zweck</th>
                   <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider hidden lg:table-cell">Kunde</th>
                   <th className="text-right px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Kilometer</th>
-                  <th className="text-right px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider w-24"></th>
+                  <th className="text-right px-6 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider w-24"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-divider-light">
                 {filtered.map(item => (
                   <tr key={item.id} className="hover:bg-card-alt/50 transition-colors">
-                    <td className="px-5 py-3.5 text-body whitespace-nowrap">{formatDate(item.datum)}</td>
+                    <td className="px-6 py-3.5 text-body whitespace-nowrap">{formatDate(item.datum)}</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2.5">
                         <div className="w-7 h-7 rounded-lg bg-p-tint flex items-center justify-center shrink-0">
@@ -117,7 +117,7 @@ export default function Fahrtenbuch() {
                     <td className="px-5 py-3.5 text-body hidden md:table-cell">{item.zweck}</td>
                     <td className="px-5 py-3.5 text-muted hidden lg:table-cell">{item.kunde || '\u2014'}</td>
                     <td className="px-5 py-3.5 text-right font-semibold text-heading whitespace-nowrap">{item.kilometer.toLocaleString('de-DE')} km</td>
-                    <td className="px-5 py-3.5 text-right">
+                    <td className="px-6 py-3.5 text-right">
                       <div className="flex justify-end gap-1">
                         <button onClick={() => openEdit(item)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint rounded-lg transition-colors"><Edit2 size={15} /></button>
                         <button onClick={() => setDeleteId(item.id)} className="p-1.5 text-muted hover:text-danger-600 hover:bg-d-tint rounded-lg transition-colors"><Trash2 size={15} /></button>
