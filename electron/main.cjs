@@ -1,5 +1,96 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
+
+// PORTABLE DATA PATH - next to the EXE!
+const isPackaged = app.isPackaged;
+const userDataPath = isPackaged
+  ? path.join(path.dirname(app.getPath('exe')), 'data')
+  : path.join(app.getAppPath(), 'data');
+
+// Ensure data directories exist
+const belegeDir = path.join(userDataPath, 'belege');
+if (!fs.existsSync(userDataPath)) {
+  fs.mkdirSync(userDataPath, { recursive: true });
+}
+if (!fs.existsSync(belegeDir)) {
+  fs.mkdirSync(belegeDir, { recursive: true });
+}
+
+// IPC HANDLERS - File System Operations
+
+// Read JSON data file
+ipcMain.handle('read-data', async () => {
+  try {
+    const filePath = path.join(userDataPath, 'buchungen.json');
+    if (fs.existsSync(filePath)) {
+      const data = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(data);
+    }
+    return null;
+  } catch (error) {
+    console.error('Error reading data:', error);
+    return null;
+  }
+});
+
+// Write JSON data file
+ipcMain.handle('write-data', async (event, data) => {
+  try {
+    const filePath = path.join(userDataPath, 'buchungen.json');
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    return { success: true };
+  } catch (error) {
+    console.error('Error writing data:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Save beleg file
+ipcMain.handle('save-beleg', async (event, { id, buffer, name }) => {
+  try {
+    const filePath = path.join(belegeDir, id);
+    fs.writeFileSync(filePath, Buffer.from(buffer));
+    return { success: true, path: filePath };
+  } catch (error) {
+    console.error('Error saving beleg:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Read beleg file
+ipcMain.handle('read-beleg', async (event, id) => {
+  try {
+    const filePath = path.join(belegeDir, id);
+    if (fs.existsSync(filePath)) {
+      const buffer = fs.readFileSync(filePath);
+      return { success: true, buffer: Array.from(buffer) };
+    }
+    return { success: false, error: 'File not found' };
+  } catch (error) {
+    console.error('Error reading beleg:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Delete beleg file
+ipcMain.handle('delete-beleg', async (event, id) => {
+  try {
+    const filePath = path.join(belegeDir, id);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting beleg:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Get data path (for info/debugging)
+ipcMain.handle('get-data-path', async () => {
+  return userDataPath;
+});
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -13,6 +104,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
+      preload: path.join(__dirname, 'preload.cjs'),
     },
   });
 

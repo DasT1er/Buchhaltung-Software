@@ -24,8 +24,7 @@
       "electron/**/*"
     ],
     "win": {
-      "target": "portable",
-      "icon": "dist/vite.svg"
+      "target": "portable"
     },
     "portable": {
       "artifactName": "BuchungsProfi.exe"
