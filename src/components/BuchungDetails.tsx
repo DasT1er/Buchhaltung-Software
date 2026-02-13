@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Calendar, DollarSign, Tag, CreditCard, FileText, User, Eye, Download, Paperclip, Image as ImageIcon } from 'lucide-react';
+import { X, Calendar, DollarSign, Tag, CreditCard, FileText, User, Eye, Download, Paperclip, Image as ImageIcon, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 import Modal from './Modal';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { getEinnahmeKategorieLabel, getAusgabeKategorieLabel, getZahlungsartLabel } from '../utils/categories';
@@ -121,6 +121,10 @@ function DetailItem({ icon: Icon, label, value }: { icon: any; label: string; va
 function BelegItem({ beleg }: { beleg: BelegMeta }) {
   const [url, setUrl] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   // FIX: Prevent flickering by properly cleaning up blob URLs
   useEffect(() => {
@@ -139,6 +143,14 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
       }
     };
   }, [beleg.id]);
+
+  // Reset zoom and position when preview opens/closes
+  useEffect(() => {
+    if (showPreview) {
+      setZoom(1);
+      setPosition({ x: 0, y: 0 });
+    }
+  }, [showPreview]);
 
   const isImage = beleg.type.startsWith('image/');
 
@@ -162,6 +174,42 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  // Zoom controls
+  function handleZoomIn() {
+    setZoom(prev => Math.min(prev + 0.5, 5));
+  }
+
+  function handleZoomOut() {
+    setZoom(prev => Math.max(prev - 0.5, 0.5));
+  }
+
+  function handleWheel(e: React.WheelEvent) {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.2 : 0.2;
+    setZoom(prev => Math.max(0.5, Math.min(5, prev + delta)));
+  }
+
+  // Drag/Pan controls
+  function handleMouseDown(e: React.MouseEvent) {
+    if (zoom > 1) {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    }
+  }
+
+  function handleMouseMove(e: React.MouseEvent) {
+    if (isDragging && zoom > 1) {
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    }
+  }
+
+  function handleMouseUp() {
+    setIsDragging(false);
   }
 
   return (
@@ -230,31 +278,77 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
         </div>
       </div>
 
-      {/* Image Preview Modal - HUGE AND NO FLICKER */}
+      {/* Image Preview Modal - HUGE WITH ZOOM! */}
       {showPreview && url && isImage && (
         <div
-          className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-6 backdrop-blur-lg"
+          className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center backdrop-blur-lg overflow-hidden"
           onClick={() => setShowPreview(false)}
+          onWheel={handleWheel}
         >
+          {/* Close button */}
           <button
             onClick={() => setShowPreview(false)}
-            className="absolute top-6 right-6 p-3 text-white hover:bg-white/20 rounded-full z-10"
+            className="absolute top-6 right-6 p-3 text-white hover:bg-white/20 rounded-full z-20 transition-all"
           >
             <X size={32} />
           </button>
 
-          <div className="relative w-full h-full flex items-center justify-center">
+          {/* Zoom controls */}
+          <div className="absolute top-6 left-6 flex flex-col gap-2 z-20">
+            <button
+              onClick={(e) => { e.stopPropagation(); handleZoomIn(); }}
+              className="p-3 text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all"
+              title="Zoom in"
+            >
+              <ZoomIn size={24} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); handleZoomOut(); }}
+              className="p-3 text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all"
+              title="Zoom out"
+            >
+              <ZoomOut size={24} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); setZoom(1); setPosition({ x: 0, y: 0 }); }}
+              className="p-3 text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all"
+              title="Reset zoom"
+            >
+              <Maximize2 size={24} />
+            </button>
+            <div className="px-3 py-2 text-white bg-white/10 rounded-full backdrop-blur-md text-sm font-bold text-center">
+              {Math.round(zoom * 100)}%
+            </div>
+          </div>
+
+          {/* Image container */}
+          <div
+            className="relative w-full h-full flex items-center justify-center cursor-move"
+            onClick={e => e.stopPropagation()}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+          >
             <img
               src={url}
               alt={beleg.name}
-              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-              onClick={e => e.stopPropagation()}
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl select-none"
+              style={{
+                transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
+                transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+                cursor: zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
+              }}
+              draggable={false}
             />
 
             {/* Image info overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b-lg">
-              <p className="text-white font-semibold text-sm truncate">{beleg.name}</p>
-              <p className="text-white/70 text-xs">{formatSize(beleg.size)}</p>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg pointer-events-none">
+              <p className="text-white font-semibold text-base truncate">{beleg.name}</p>
+              <p className="text-white/70 text-sm">{formatSize(beleg.size)}</p>
+              {zoom > 1 && (
+                <p className="text-white/50 text-xs mt-1">💡 Ziehen zum Verschieben • Mausrad zum Zoomen</p>
+              )}
             </div>
           </div>
         </div>
