@@ -12,8 +12,8 @@ import { ausgabeKategorien, zahlungsarten, getAusgabeKategorieLabel, getZahlungs
 import { exportAusgabenCSV } from '../utils/exportUtils';
 import type { Ausgabe, AusgabeKategorie, Zahlungsart, BelegMeta } from '../types';
 
-const inputCls = 'w-full px-3 py-2 text-sm bg-input border border-divider rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-heading transition-colors';
-const labelCls = 'block text-sm font-medium text-heading mb-1';
+const inputCls = 'w-full px-3 py-2.5 text-sm bg-input border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors';
+const labelCls = 'block text-[13px] font-medium text-heading mb-1.5';
 
 export default function Ausgaben() {
   const { onMenuClick } = useOutletContext<{ onMenuClick: () => void }>();
@@ -65,20 +65,20 @@ export default function Ausgaben() {
     <>
       <Header
         title="Ausgaben"
-        subtitle={`${geschaeftsjahr} - ${filtered.length} Einträge`}
+        subtitle={`${geschaeftsjahr} \u2022 ${filtered.length} Eintr\u00e4ge`}
         onMenuClick={onMenuClick}
         actions={
           <div className="flex gap-2">
             <button
               onClick={() => exportAusgabenCSV(filtered)}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-body bg-card-alt rounded-lg hover:opacity-80 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-body bg-card-alt border border-divider rounded-xl hover:bg-divider-light transition-colors"
             >
-              <Download size={16} />
+              <Download size={15} />
               CSV
             </button>
             <button
               onClick={openNew}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-danger-600 rounded-lg hover:bg-danger-700 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-danger-600 rounded-xl hover:bg-danger-700 transition-colors shadow-sm shadow-danger-600/20"
             >
               <Plus size={16} />
               <span className="hidden sm:inline">Neue Ausgabe</span>
@@ -87,7 +87,7 @@ export default function Ausgaben() {
         }
       />
 
-      <div className="p-4 sm:p-6 space-y-4">
+      <div className="p-5 sm:p-8 space-y-5">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
@@ -96,13 +96,13 @@ export default function Ausgaben() {
               placeholder="Suchen..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm bg-card border border-divider rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-heading transition-colors"
+              className="w-full pl-10 pr-4 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 text-heading transition-colors"
             />
           </div>
           <select
             value={filterKat}
             onChange={e => setFilterKat(e.target.value)}
-            className="px-3 py-2.5 text-sm bg-card border border-divider rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-heading transition-colors"
+            className="px-3 py-2.5 text-sm bg-card border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/40 text-heading transition-colors"
           >
             <option value="">Alle Kategorien</option>
             {ausgabeKategorien.map(k => (
@@ -111,32 +111,32 @@ export default function Ausgaben() {
           </select>
         </div>
 
-        <div className="bg-d-tint border border-d-tint-border rounded-xl p-4 flex items-center justify-between">
-          <span className="text-sm font-medium text-d-on-tint">Gesamt ({filtered.length} Einträge)</span>
+        <div className="bg-d-tint border border-d-tint-border rounded-2xl p-4 flex items-center justify-between">
+          <span className="text-sm font-medium text-d-on-tint">Gesamt ({filtered.length} Eintr\u00e4ge)</span>
           <span className="text-lg font-bold text-d-on-tint">{formatCurrency(gesamt)}</span>
         </div>
 
-        <div className="bg-card rounded-xl shadow-sm border border-divider-light overflow-hidden transition-colors">
+        <div className="bg-card rounded-2xl border border-divider-light overflow-hidden transition-colors" style={{ boxShadow: 'var(--card-shadow)' }}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-divider bg-card-alt">
-                  <th className="text-left px-4 py-3 font-semibold text-body">Datum</th>
-                  <th className="text-left px-4 py-3 font-semibold text-body">Beschreibung</th>
-                  <th className="text-left px-4 py-3 font-semibold text-body hidden md:table-cell">Kategorie</th>
-                  <th className="text-left px-4 py-3 font-semibold text-body hidden lg:table-cell">Zahlung</th>
-                  <th className="text-right px-4 py-3 font-semibold text-body">Betrag</th>
-                  <th className="text-right px-4 py-3 font-semibold text-body w-24">Aktionen</th>
+                <tr className="border-b border-divider bg-card-alt/50">
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Datum</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Beschreibung</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider hidden md:table-cell">Kategorie</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider hidden lg:table-cell">Zahlung</th>
+                  <th className="text-right px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider">Betrag</th>
+                  <th className="text-right px-5 py-3.5 text-xs font-semibold text-muted uppercase tracking-wider w-24"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-divider-light">
                 {filtered.map(item => (
-                  <tr key={item.id} className="hover:bg-card-alt transition-colors">
-                    <td className="px-4 py-3 text-body whitespace-nowrap">{formatDate(item.datum)}</td>
-                    <td className="px-4 py-3">
+                  <tr key={item.id} className="hover:bg-card-alt/50 transition-colors">
+                    <td className="px-5 py-3.5 text-body whitespace-nowrap">{formatDate(item.datum)}</td>
+                    <td className="px-5 py-3.5">
                       <div>
                         <p className="font-medium text-heading">{item.beschreibung}</p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 mt-0.5">
                           {item.belegnummer && <p className="text-xs text-muted">Beleg: {item.belegnummer}</p>}
                           {item.belege && item.belege.length > 0 && (
                             <span className="inline-flex items-center gap-0.5 text-xs text-primary-600 dark:text-primary-400">
@@ -146,16 +146,16 @@ export default function Ausgaben() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-body hidden md:table-cell">
-                      <span className="inline-flex px-2 py-0.5 text-xs font-medium bg-w-tint text-w-on-tint rounded-full">
+                    <td className="px-5 py-3.5 hidden md:table-cell">
+                      <span className="inline-flex px-2.5 py-1 text-xs font-medium bg-w-tint text-w-on-tint rounded-lg">
                         {getAusgabeKategorieLabel(item.kategorie)}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-muted hidden lg:table-cell">{getZahlungsartLabel(item.zahlungsart)}</td>
-                    <td className="px-4 py-3 text-right font-semibold text-danger-600 dark:text-danger-400 whitespace-nowrap">
+                    <td className="px-5 py-3.5 text-muted hidden lg:table-cell">{getZahlungsartLabel(item.zahlungsart)}</td>
+                    <td className="px-5 py-3.5 text-right font-semibold text-danger-600 dark:text-danger-400 whitespace-nowrap">
                       -{formatCurrency(item.betrag)}
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-5 py-3.5 text-right">
                       <div className="flex justify-end gap-1">
                         <button onClick={() => openEdit(item)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint rounded-lg transition-colors">
                           <Edit2 size={15} />
@@ -169,8 +169,14 @@ export default function Ausgaben() {
                 ))}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-12 text-center text-muted">
-                      Keine Ausgaben gefunden. Klicke auf "Neue Ausgabe" um zu beginnen.
+                    <td colSpan={6} className="px-5 py-16 text-center">
+                      <div>
+                        <div className="w-12 h-12 mx-auto rounded-2xl bg-card-alt flex items-center justify-center mb-3">
+                          <Plus size={20} className="text-muted" />
+                        </div>
+                        <p className="text-sm font-medium text-muted">Keine Ausgaben gefunden</p>
+                        <p className="text-xs text-muted mt-1">Klicke auf &quot;Neue Ausgabe&quot; um zu beginnen</p>
+                      </div>
                     </td>
                   </tr>
                 )}
@@ -274,12 +280,12 @@ function AusgabeModal({
 
         <BelegeUpload belege={belege} onChange={setBelege} />
 
-        <div className="flex justify-end gap-3 pt-2">
-          <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-heading bg-card-alt rounded-lg hover:opacity-80 transition-colors">
+        <div className="flex justify-end gap-3 pt-3 border-t border-divider-light">
+          <button type="button" onClick={onClose} className="px-4 py-2.5 text-sm font-medium text-heading bg-card-alt border border-divider rounded-xl hover:bg-divider-light transition-colors">
             Abbrechen
           </button>
-          <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors">
-            {initial ? 'Speichern' : 'Hinzufügen'}
+          <button type="submit" className="px-5 py-2.5 text-sm font-medium text-white bg-primary-600 rounded-xl hover:bg-primary-700 transition-colors shadow-sm shadow-primary-600/20">
+            {initial ? 'Speichern' : 'Hinzuf\u00fcgen'}
           </button>
         </div>
       </form>
