@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Calendar, DollarSign, Tag, CreditCard, FileText, User, Eye, Download, Paperclip, Image as ImageIcon, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
+import { Calendar, DollarSign, Tag, CreditCard, FileText, User, Download, Paperclip, Image as ImageIcon, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 import Modal from './Modal';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { getEinnahmeKategorieLabel, getAusgabeKategorieLabel, getZahlungsartLabel } from '../utils/categories';
@@ -120,7 +120,6 @@ function DetailItem({ icon: Icon, label, value }: { icon: any; label: string; va
 
 function BelegItem({ beleg }: { beleg: BelegMeta }) {
   const [url, setUrl] = useState<string | null>(null);
-  const [showPreview, setShowPreview] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -144,23 +143,7 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
     };
   }, [beleg.id]);
 
-  // Reset zoom and position when preview opens/closes
-  useEffect(() => {
-    if (showPreview) {
-      setZoom(1);
-      setPosition({ x: 0, y: 0 });
-    }
-  }, [showPreview]);
-
   const isImage = beleg.type.startsWith('image/');
-
-  function handleView() {
-    if (isImage) {
-      setShowPreview(true);
-    } else if (url) {
-      window.open(url, '_blank');
-    }
-  }
 
   function handleDownload() {
     if (!url) return;
@@ -213,146 +196,100 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
   }
 
   return (
-    <>
-      <div className="flex flex-col gap-4 p-4 bg-card-alt rounded-xl hover:bg-card-alt/70 group">
-        {/* HUGE Preview Thumbnail */}
-        <div
-          className={`relative rounded-lg overflow-hidden shrink-0 cursor-pointer ${
-            isImage ? 'w-80 h-80' : 'w-12 h-12'
-          }`}
-          onClick={handleView}
+    <div className="flex flex-col gap-4 p-4 bg-card-alt rounded-xl">
+      {/* File info header */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <p className="text-base font-semibold text-heading truncate">{beleg.name}</p>
+          <p className="text-sm text-muted mt-1">{formatSize(beleg.size)}</p>
+        </div>
+
+        {/* Download button */}
+        <button
+          onClick={handleDownload}
+          className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-br from-success-500 to-success-700 rounded-lg hover:shadow-lg transition-all shrink-0"
+          title="Download"
         >
-          {isImage && url ? (
-            <img
-              src={url}
-              alt={beleg.name}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className={`w-full h-full ${isImage ? 'bg-s-tint/80' : 'bg-p-tint/80'} flex items-center justify-center`}>
-              {isImage ? (
-                <ImageIcon size={isImage ? 80 : 20} className="text-s-on-tint" />
-              ) : (
-                <FileText size={20} className="text-p-on-tint" />
-              )}
-            </div>
-          )}
-
-          {/* Hover overlay for images - BIGGER */}
-          {isImage && (
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100">
-              <Eye size={60} className="text-white drop-shadow-lg" />
-            </div>
-          )}
-        </div>
-
-        {/* File info and actions */}
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <p className="text-base font-semibold text-heading truncate">{beleg.name}</p>
-            <p className="text-sm text-muted mt-1">{formatSize(beleg.size)}</p>
-            {isImage && (
-              <p className="text-sm text-primary-600 dark:text-primary-400 mt-2 font-medium">
-                👆 Klicken für Vollansicht
-              </p>
-            )}
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex gap-2 shrink-0">
-            <button
-              onClick={handleView}
-              className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg hover:shadow-lg transition-all"
-              title={isImage ? "Vorschau" : "Öffnen"}
-            >
-              <Eye size={18} />
-            </button>
-            <button
-              onClick={handleDownload}
-              className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-br from-success-500 to-success-700 rounded-lg hover:shadow-lg transition-all"
-              title="Download"
-            >
-              <Download size={18} />
-            </button>
-          </div>
-        </div>
+          <Download size={18} />
+        </button>
       </div>
 
-      {/* Image Preview Modal - HUGE WITH ZOOM! */}
-      {showPreview && url && isImage && (
-        <div
-          className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center backdrop-blur-lg overflow-hidden"
-          onClick={() => setShowPreview(false)}
-          onWheel={handleWheel}
-        >
-          {/* Close button */}
-          <button
-            onClick={() => setShowPreview(false)}
-            className="absolute top-6 right-6 p-3 text-white hover:bg-white/20 rounded-full z-20 transition-all"
-          >
-            <X size={32} />
-          </button>
-
-          {/* Zoom controls */}
-          <div className="absolute top-6 left-6 flex flex-col gap-2 z-20">
+      {/* HUGE PREVIEW BOX WITH ZOOM - No separate modal! */}
+      {isImage ? (
+        <div className="relative">
+          {/* Zoom controls - ALWAYS VISIBLE */}
+          <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
             <button
-              onClick={(e) => { e.stopPropagation(); handleZoomIn(); }}
-              className="p-3 text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all"
+              onClick={handleZoomIn}
+              className="p-3 text-white bg-black/50 hover:bg-black/70 rounded-full backdrop-blur-md transition-all"
               title="Zoom in"
             >
-              <ZoomIn size={24} />
+              <ZoomIn size={20} />
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); handleZoomOut(); }}
-              className="p-3 text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all"
+              onClick={handleZoomOut}
+              className="p-3 text-white bg-black/50 hover:bg-black/70 rounded-full backdrop-blur-md transition-all"
               title="Zoom out"
             >
-              <ZoomOut size={24} />
+              <ZoomOut size={20} />
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); setZoom(1); setPosition({ x: 0, y: 0 }); }}
-              className="p-3 text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all"
+              onClick={() => { setZoom(1); setPosition({ x: 0, y: 0 }); }}
+              className="p-3 text-white bg-black/50 hover:bg-black/70 rounded-full backdrop-blur-md transition-all"
               title="Reset zoom"
             >
-              <Maximize2 size={24} />
+              <Maximize2 size={20} />
             </button>
-            <div className="px-3 py-2 text-white bg-white/10 rounded-full backdrop-blur-md text-sm font-bold text-center">
+            <div className="px-3 py-2 text-white bg-black/50 rounded-full backdrop-blur-md text-sm font-bold text-center">
               {Math.round(zoom * 100)}%
             </div>
           </div>
 
-          {/* Image container */}
+          {/* HUGE IMAGE BOX with zoom & pan */}
           <div
-            className="relative w-full h-full flex items-center justify-center cursor-move"
-            onClick={e => e.stopPropagation()}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
+            className="relative w-full h-[700px] rounded-lg overflow-hidden bg-black/20"
+            onWheel={handleWheel}
           >
-            <img
-              src={url}
-              alt={beleg.name}
-              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl select-none"
-              style={{
-                transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
-                transition: isDragging ? 'none' : 'transform 0.1s ease-out',
-                cursor: zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
-              }}
-              draggable={false}
-            />
-
-            {/* Image info overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg pointer-events-none">
-              <p className="text-white font-semibold text-base truncate">{beleg.name}</p>
-              <p className="text-white/70 text-sm">{formatSize(beleg.size)}</p>
-              {zoom > 1 && (
-                <p className="text-white/50 text-xs mt-1">💡 Ziehen zum Verschieben • Mausrad zum Zoomen</p>
+            <div
+              className="w-full h-full flex items-center justify-center"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+            >
+              {url ? (
+                <img
+                  src={url}
+                  alt={beleg.name}
+                  className="max-w-full max-h-full object-contain select-none"
+                  style={{
+                    transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
+                    transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+                    cursor: zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
+                  }}
+                  draggable={false}
+                />
+              ) : (
+                <div className="w-full h-full bg-s-tint/80 flex items-center justify-center">
+                  <ImageIcon size={80} className="text-s-on-tint" />
+                </div>
               )}
             </div>
+
+            {/* Hint overlay */}
+            {zoom > 1 && (
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pointer-events-none">
+                <p className="text-white/70 text-sm">💡 Ziehen zum Verschieben • Mausrad zum Zoomen</p>
+              </div>
+            )}
           </div>
         </div>
+      ) : (
+        /* Non-image files - small icon */
+        <div className="w-16 h-16 bg-p-tint/80 rounded-lg flex items-center justify-center">
+          <FileText size={24} className="text-p-on-tint" />
+        </div>
       )}
-    </>
+    </div>
   );
 }
