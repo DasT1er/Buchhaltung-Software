@@ -21,7 +21,7 @@ export default function BuchungDetails({ isOpen, onClose, data, type }: Props) {
   const ausgabe = !isEinnahme ? (data as Ausgabe) : null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Details" maxWidth="max-w-2xl">
+    <Modal isOpen={isOpen} onClose={onClose} title="Details" maxWidth="max-w-5xl">
       <div className="space-y-4">
         {/* Header */}
         <div className={`glass rounded-lg p-4 ${isEinnahme ? 'bg-s-tint/20' : 'bg-d-tint/20'}`}>
@@ -166,11 +166,11 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
 
   return (
     <>
-      <div className="flex items-start gap-3 p-3 bg-card-alt rounded-lg hover:bg-card-alt/70 transition-all group">
-        {/* LARGER Preview Thumbnail */}
+      <div className="flex flex-col gap-4 p-4 bg-card-alt rounded-xl hover:bg-card-alt/70 group">
+        {/* HUGE Preview Thumbnail */}
         <div
-          className={`relative rounded-lg overflow-hidden shrink-0 cursor-pointer transition-all ${
-            isImage ? 'w-20 h-20 hover:scale-105' : 'w-12 h-12'
+          className={`relative rounded-lg overflow-hidden shrink-0 cursor-pointer ${
+            isImage ? 'w-80 h-80' : 'w-12 h-12'
           }`}
           onClick={handleView}
         >
@@ -183,69 +183,71 @@ function BelegItem({ beleg }: { beleg: BelegMeta }) {
           ) : (
             <div className={`w-full h-full ${isImage ? 'bg-s-tint/80' : 'bg-p-tint/80'} flex items-center justify-center`}>
               {isImage ? (
-                <ImageIcon size={20} className="text-s-on-tint" />
+                <ImageIcon size={isImage ? 80 : 20} className="text-s-on-tint" />
               ) : (
                 <FileText size={20} className="text-p-on-tint" />
               )}
             </div>
           )}
 
-          {/* Hover overlay for images */}
+          {/* Hover overlay for images - BIGGER */}
           {isImage && (
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100">
-              <Eye size={20} className="text-white" />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100">
+              <Eye size={60} className="text-white drop-shadow-lg" />
             </div>
           )}
         </div>
 
-        {/* File info */}
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-heading truncate">{beleg.name}</p>
-          <p className="text-xs text-muted mt-0.5">{formatSize(beleg.size)}</p>
-          {isImage && (
-            <p className="text-xs text-primary-600 dark:text-primary-400 mt-1 font-medium">
-              Klicken für Vollansicht
-            </p>
-          )}
-        </div>
+        {/* File info and actions */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-base font-semibold text-heading truncate">{beleg.name}</p>
+            <p className="text-sm text-muted mt-1">{formatSize(beleg.size)}</p>
+            {isImage && (
+              <p className="text-sm text-primary-600 dark:text-primary-400 mt-2 font-medium">
+                👆 Klicken für Vollansicht
+              </p>
+            )}
+          </div>
 
-        {/* Action buttons */}
-        <div className="flex flex-col gap-1 shrink-0">
-          <button
-            onClick={handleView}
-            className="p-2 text-muted hover:text-primary-600 hover:bg-p-tint rounded-md transition-colors"
-            title={isImage ? "Vorschau" : "Öffnen"}
-          >
-            <Eye size={16} />
-          </button>
-          <button
-            onClick={handleDownload}
-            className="p-2 text-muted hover:text-success-600 hover:bg-s-tint rounded-md transition-colors"
-            title="Download"
-          >
-            <Download size={16} />
-          </button>
+          {/* Action buttons */}
+          <div className="flex gap-2 shrink-0">
+            <button
+              onClick={handleView}
+              className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg hover:shadow-lg transition-all"
+              title={isImage ? "Vorschau" : "Öffnen"}
+            >
+              <Eye size={18} />
+            </button>
+            <button
+              onClick={handleDownload}
+              className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-br from-success-500 to-success-700 rounded-lg hover:shadow-lg transition-all"
+              title="Download"
+            >
+              <Download size={18} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Image Preview Modal - LARGER AND SMOOTHER */}
+      {/* Image Preview Modal - HUGE AND NO FLICKER */}
       {showPreview && url && isImage && (
         <div
-          className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-6 backdrop-blur-lg"
           onClick={() => setShowPreview(false)}
         >
           <button
             onClick={() => setShowPreview(false)}
-            className="absolute top-6 right-6 p-3 text-white hover:bg-white/20 rounded-full transition-all hover:scale-110 z-10"
+            className="absolute top-6 right-6 p-3 text-white hover:bg-white/20 rounded-full z-10"
           >
-            <X size={28} />
+            <X size={32} />
           </button>
 
-          <div className="relative max-w-7xl max-h-[90vh] animate-in zoom-in-95 duration-300">
+          <div className="relative w-full h-full flex items-center justify-center">
             <img
               src={url}
               alt={beleg.name}
-              className="max-w-full max-h-[90vh] rounded-lg shadow-2xl"
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
               onClick={e => e.stopPropagation()}
             />
 
