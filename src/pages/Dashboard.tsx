@@ -94,7 +94,7 @@ export default function Dashboard() {
 
         {/* Charts Row 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-          <div className="glass rounded-xl p-4">
+          <div className="glass rounded-lg p-4">
             <h3 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Monatsübersicht</h3>
             <div className="h-64">
               {hasData ? (
@@ -112,7 +112,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="glass rounded-xl p-4">
+          <div className="glass rounded-lg p-4">
             <h3 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Kumulativer Verlauf</h3>
             <div className="h-60">
               {hasData ? (
@@ -134,7 +134,7 @@ export default function Dashboard() {
 
         {/* Charts Row 2 - Pie Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-          <div className="glass rounded-xl p-4">
+          <div className="glass rounded-lg p-4">
             <h3 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Einnahmen nach Kategorie</h3>
             <div className="h-60">
               {einnahmenByKat.length > 0 ? (
@@ -151,7 +151,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="glass rounded-xl p-4">
+          <div className="glass rounded-lg p-4">
             <h3 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Ausgaben nach Kategorie</h3>
             <div className="h-60">
               {ausgabenByKat.length > 0 ? (
@@ -181,7 +181,7 @@ export default function Dashboard() {
 
 function RecentList({ title, items, type }: { title: string; items: (Einnahme | Ausgabe)[]; type: 'einnahme' | 'ausgabe' }) {
   return (
-    <div className="glass rounded-xl overflow-hidden">
+    <div className="glass rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-divider">
         <h3 className="text-xs font-bold text-heading uppercase tracking-wide">{title}</h3>
       </div>

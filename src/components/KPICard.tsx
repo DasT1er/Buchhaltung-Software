@@ -41,9 +41,9 @@ export default function KPICard({ title, value, subtitle, icon: Icon, color }: K
 
       <div className="relative flex items-start justify-between">
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-bold text-muted uppercase tracking-wider">{title}</p>
-          <p className="text-xl font-black text-heading mt-1 tracking-tight truncate leading-none">{value}</p>
-          {subtitle && <p className="text-[10px] text-muted mt-1.5">{subtitle}</p>}
+          <p className="text-xs font-bold text-muted uppercase tracking-wider">{title}</p>
+          <p className="text-2xl font-black text-heading mt-1 tracking-tight truncate leading-none">{value}</p>
+          {subtitle && <p className="text-xs text-muted mt-1.5">{subtitle}</p>}
         </div>
         <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${g.icon} flex items-center justify-center shadow-md ${g.shadow} shrink-0 ml-2 group-hover:scale-110 transition-transform duration-300`}>
           <Icon size={16} className="text-white" />

@@ -82,79 +82,79 @@ export default function EURBericht() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="glass rounded-lg p-4 text-center">
-            <p className="text-xs font-bold text-s-on-tint uppercase tracking-wide">Betriebseinnahmen</p>
-            <p className="text-xl font-black text-s-on-tint mt-1">{formatCurrency(gesamtEinnahmen)}</p>
+          <div className="glass rounded-lg p-2.5 text-center">
+            <p className="text-sm font-bold text-s-on-tint uppercase tracking-wide">Betriebseinnahmen</p>
+            <p className="text-lg font-black text-s-on-tint mt-1">{formatCurrency(gesamtEinnahmen)}</p>
           </div>
-          <div className="glass rounded-lg p-4 text-center">
-            <p className="text-xs font-bold text-d-on-tint uppercase tracking-wide">Betriebsausgaben</p>
-            <p className="text-xl font-black text-d-on-tint mt-1">{formatCurrency(gesamtAusgaben)}</p>
+          <div className="glass rounded-lg p-2.5 text-center">
+            <p className="text-sm font-bold text-d-on-tint uppercase tracking-wide">Betriebsausgaben</p>
+            <p className="text-lg font-black text-d-on-tint mt-1">{formatCurrency(gesamtAusgaben)}</p>
           </div>
-          <div className={`glass rounded-lg p-4 text-center ${gewinn >= 0 ? 'bg-p-tint/20' : 'bg-d-tint/20'}`}>
-            <p className={`text-xs font-bold uppercase tracking-wide ${gewinn >= 0 ? 'text-p-on-tint' : 'text-d-on-tint'}`}>{gewinn >= 0 ? 'Gewinn' : 'Verlust'}</p>
-            <p className={`text-xl font-black mt-1 ${gewinn >= 0 ? 'text-p-on-tint' : 'text-d-on-tint'}`}>{formatCurrency(gewinn)}</p>
+          <div className={`glass rounded-lg p-2.5 text-center ${gewinn >= 0 ? 'bg-p-tint/20' : 'bg-d-tint/20'}`}>
+            <p className={`text-sm font-bold uppercase tracking-wide ${gewinn >= 0 ? 'text-p-on-tint' : 'text-d-on-tint'}`}>{gewinn >= 0 ? 'Gewinn' : 'Verlust'}</p>
+            <p className={`text-lg font-black mt-1 ${gewinn >= 0 ? 'text-p-on-tint' : 'text-d-on-tint'}`}>{formatCurrency(gewinn)}</p>
           </div>
         </div>
 
         {/* Einnahmen Table */}
-        <div className="glass rounded-xl overflow-hidden">
+        <div className="glass rounded-lg overflow-hidden">
           <div className="px-4 py-2.5 border-b border-divider/50 bg-s-tint/30 backdrop-blur-sm">
             <h3 className="text-xs font-black text-s-on-tint uppercase tracking-wide">I. Betriebseinnahmen</h3>
           </div>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-divider/50">
-                <th className="text-left px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Kategorie</th>
-                <th className="text-right px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Betrag</th>
+                <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Kategorie</th>
+                <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Betrag</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-divider/30">
               {einnahmenByKat.map(([kat, betrag]) => (
                 <tr key={kat} className="hover:bg-card-alt/30 transition-colors">
-                  <td className="px-4 py-2.5 text-xs text-heading">{getEinnahmeKategorieLabel(kat as any)}</td>
-                  <td className="px-4 py-2.5 text-right text-xs font-bold text-heading">{formatCurrency(betrag)}</td>
+                  <td className="px-4 py-2 text-sm text-heading">{getEinnahmeKategorieLabel(kat as any)}</td>
+                  <td className="px-4 py-2 text-right text-sm font-bold text-heading">{formatCurrency(betrag)}</td>
                 </tr>
               ))}
               {einnahmenByKat.length === 0 && (
-                <tr><td colSpan={2} className="px-4 py-6 text-center text-xs text-muted">Keine Einnahmen</td></tr>
+                <tr><td colSpan={2} className="px-4 py-6 text-center text-sm text-muted">Keine Einnahmen</td></tr>
               )}
             </tbody>
             <tfoot>
               <tr className="border-t-2 border-s-tint-border/50 bg-s-tint/30 backdrop-blur-sm">
-                <td className="px-4 py-2.5 text-xs font-black text-s-on-tint uppercase tracking-wide">Summe Betriebseinnahmen</td>
-                <td className="px-4 py-2.5 text-right text-xs font-black text-s-on-tint">{formatCurrency(gesamtEinnahmen)}</td>
+                <td className="px-4 py-2 text-sm font-black text-s-on-tint uppercase tracking-wide">Summe Betriebseinnahmen</td>
+                <td className="px-4 py-2 text-right text-sm font-black text-s-on-tint">{formatCurrency(gesamtEinnahmen)}</td>
               </tr>
             </tfoot>
           </table>
         </div>
 
         {/* Ausgaben Table */}
-        <div className="glass rounded-xl overflow-hidden">
+        <div className="glass rounded-lg overflow-hidden">
           <div className="px-4 py-2.5 border-b border-divider/50 bg-d-tint/30 backdrop-blur-sm">
             <h3 className="text-xs font-black text-d-on-tint uppercase tracking-wide">II. Betriebsausgaben</h3>
           </div>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-divider/50">
-                <th className="text-left px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Kategorie</th>
-                <th className="text-right px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Betrag</th>
+                <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Kategorie</th>
+                <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Betrag</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-divider/30">
               {ausgabenByKat.map(([kat, betrag]) => (
                 <tr key={kat} className="hover:bg-card-alt/30 transition-colors">
-                  <td className="px-4 py-2.5 text-xs text-heading">{getAusgabeKategorieLabel(kat as any)}</td>
-                  <td className="px-4 py-2.5 text-right text-xs font-bold text-heading">{formatCurrency(betrag)}</td>
+                  <td className="px-4 py-2 text-sm text-heading">{getAusgabeKategorieLabel(kat as any)}</td>
+                  <td className="px-4 py-2 text-right text-sm font-bold text-heading">{formatCurrency(betrag)}</td>
                 </tr>
               ))}
               {ausgabenByKat.length === 0 && (
-                <tr><td colSpan={2} className="px-4 py-6 text-center text-xs text-muted">Keine Ausgaben</td></tr>
+                <tr><td colSpan={2} className="px-4 py-6 text-center text-sm text-muted">Keine Ausgaben</td></tr>
               )}
             </tbody>
             <tfoot>
               <tr className="border-t-2 border-d-tint-border/50 bg-d-tint/30 backdrop-blur-sm">
-                <td className="px-4 py-2.5 text-xs font-black text-d-on-tint uppercase tracking-wide">Summe Betriebsausgaben</td>
-                <td className="px-4 py-2.5 text-right text-xs font-black text-d-on-tint">{formatCurrency(gesamtAusgaben)}</td>
+                <td className="px-4 py-2 text-sm font-black text-d-on-tint uppercase tracking-wide">Summe Betriebsausgaben</td>
+                <td className="px-4 py-2 text-right text-sm font-black text-d-on-tint">{formatCurrency(gesamtAusgaben)}</td>
               </tr>
             </tfoot>
           </table>
@@ -174,26 +174,26 @@ export default function EURBericht() {
         </div>
 
         {/* Quartalsübersicht */}
-        <div className="glass rounded-xl overflow-hidden">
+        <div className="glass rounded-lg overflow-hidden">
           <div className="px-4 py-2.5 border-b border-divider/50 bg-card-alt/30">
             <h3 className="text-xs font-black text-heading uppercase tracking-wide">Quartalsübersicht</h3>
           </div>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-divider/50 bg-card-alt/30">
-                <th className="text-left px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Quartal</th>
-                <th className="text-right px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Einnahmen</th>
-                <th className="text-right px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Ausgaben</th>
-                <th className="text-right px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Ergebnis</th>
+                <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Quartal</th>
+                <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Einnahmen</th>
+                <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Ausgaben</th>
+                <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Ergebnis</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-divider/30">
               {quartalsDaten.map(q => (
                 <tr key={q.label} className="hover:bg-card-alt/30 transition-colors">
-                  <td className="px-4 py-2.5 text-xs font-semibold text-heading">{q.label}</td>
-                  <td className="px-4 py-2.5 text-right text-xs text-success-600 dark:text-success-400">{formatCurrency(q.einnahmen)}</td>
-                  <td className="px-4 py-2.5 text-right text-xs text-danger-600 dark:text-danger-400">{formatCurrency(q.ausgaben)}</td>
-                  <td className={`px-4 py-2.5 text-right text-xs font-bold ${q.einnahmen - q.ausgaben >= 0 ? 'text-primary-600 dark:text-primary-400' : 'text-danger-600 dark:text-danger-400'}`}>
+                  <td className="px-4 py-2 text-sm font-semibold text-heading">{q.label}</td>
+                  <td className="px-4 py-2 text-right text-sm text-success-600 dark:text-success-400">{formatCurrency(q.einnahmen)}</td>
+                  <td className="px-4 py-2 text-right text-sm text-danger-600 dark:text-danger-400">{formatCurrency(q.ausgaben)}</td>
+                  <td className={`px-4 py-2 text-right text-sm font-bold ${q.einnahmen - q.ausgaben >= 0 ? 'text-primary-600 dark:text-primary-400' : 'text-danger-600 dark:text-danger-400'}`}>
                     {formatCurrency(q.einnahmen - q.ausgaben)}
                   </td>
                 </tr>
@@ -203,8 +203,8 @@ export default function EURBericht() {
         </div>
 
         {/* Hinweis */}
-        <div className="glass rounded-lg p-3">
-          <p className="text-[10px] text-w-on-tint leading-relaxed">
+        <div className="glass rounded-lg p-2.5">
+          <p className="text-xs text-w-on-tint leading-relaxed">
             <strong>Hinweis:</strong> Diese Übersicht dient als Hilfe zur Erstellung Ihrer Einnahmen-Überschuss-Rechnung.
             Bitte besprechen Sie die Daten mit Ihrem Steuerberater, bevor Sie diese beim Finanzamt einreichen.
             Die offizielle EÜR muss über die Anlage EÜR zur Einkommensteuererklärung (Formular) beim Finanzamt abgegeben werden.

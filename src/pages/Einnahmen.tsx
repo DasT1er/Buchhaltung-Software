@@ -12,8 +12,8 @@ import { einnahmeKategorien, zahlungsarten, getEinnahmeKategorieLabel, getZahlun
 import { exportEinnahmenCSV } from '../utils/exportUtils';
 import type { Einnahme, EinnahmeKategorie, Zahlungsart, BelegMeta } from '../types';
 
-const inputCls = 'w-full px-3 py-2 text-xs glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
-const labelCls = 'block text-[10px] font-bold text-heading mb-1 uppercase tracking-wide';
+const inputCls = 'w-full px-3 py-2 text-sm glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
+const labelCls = 'block text-xs font-bold text-heading mb-1 uppercase tracking-wide';
 
 export default function Einnahmen() {
   const { onMenuClick } = useOutletContext<{ onMenuClick: () => void }>();
@@ -91,19 +91,19 @@ export default function Einnahmen() {
       <div className="p-4 sm:p-6 space-y-3">
         <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
             <input
               type="text"
               placeholder="Suchen..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="glass w-full pl-9 pr-3 py-2 text-xs rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all"
+              className="glass w-full pl-10 pr-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all"
             />
           </div>
           <select
             value={filterKat}
             onChange={e => setFilterKat(e.target.value)}
-            className="glass px-3 py-2 text-xs rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all"
+            className="glass px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all"
           >
             <option value="">Alle Kategorien</option>
             {einnahmeKategorien.map(k => (
@@ -112,57 +112,57 @@ export default function Einnahmen() {
           </select>
         </div>
 
-        <div className="glass rounded-lg p-3 flex items-center justify-between">
-          <span className="text-xs font-bold text-s-on-tint uppercase tracking-wide">Gesamt ({filtered.length})</span>
-          <span className="text-base font-black text-s-on-tint">{formatCurrency(gesamt)}</span>
+        <div className="glass rounded-lg p-2.5 flex items-center justify-between">
+          <span className="text-sm font-bold text-s-on-tint uppercase tracking-wide">Gesamt ({filtered.length})</span>
+          <span className="text-lg font-black text-s-on-tint">{formatCurrency(gesamt)}</span>
         </div>
 
-        <div className="glass rounded-xl overflow-hidden">
+        <div className="glass rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full">
               <thead>
                 <tr className="border-b border-divider/50 bg-card-alt/30">
-                  <th className="text-left px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Datum</th>
-                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Beschreibung</th>
-                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider hidden md:table-cell">Kategorie</th>
-                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider hidden lg:table-cell">Zahlung</th>
-                  <th className="text-right px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Betrag</th>
-                  <th className="text-right px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider w-20"></th>
+                  <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Datum</th>
+                  <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Beschreibung</th>
+                  <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider hidden md:table-cell">Kategorie</th>
+                  <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider hidden lg:table-cell">Zahlung</th>
+                  <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Betrag</th>
+                  <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider w-24"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-divider/30">
                 {filtered.map(item => (
                   <tr key={item.id} className="hover:bg-card-alt/30 transition-colors">
-                    <td className="px-4 py-2.5 text-xs text-body whitespace-nowrap">{formatDate(item.datum)}</td>
-                    <td className="px-3 py-2.5">
+                    <td className="px-4 py-2 text-sm text-body whitespace-nowrap">{formatDate(item.datum)}</td>
+                    <td className="px-4 py-2">
                       <div>
-                        <p className="text-xs font-semibold text-heading">{item.beschreibung}</p>
+                        <p className="text-sm font-semibold text-heading">{item.beschreibung}</p>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          {item.rechnungsnummer && <p className="text-[10px] text-muted">Re.Nr.: {item.rechnungsnummer}</p>}
+                          {item.rechnungsnummer && <p className="text-xs text-muted">Re.Nr.: {item.rechnungsnummer}</p>}
                           {item.belege && item.belege.length > 0 && (
-                            <span className="inline-flex items-center gap-0.5 text-[10px] text-primary-600 dark:text-primary-400">
-                              <Paperclip size={9} />{item.belege.length}
+                            <span className="inline-flex items-center gap-0.5 text-xs text-primary-600 dark:text-primary-400">
+                              <Paperclip size={11} />{item.belege.length}
                             </span>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="px-3 py-2.5 hidden md:table-cell">
-                      <span className="inline-flex px-2 py-0.5 text-[10px] font-bold bg-p-tint/80 text-p-on-tint rounded-md backdrop-blur-sm">
+                    <td className="px-4 py-2 hidden md:table-cell">
+                      <span className="inline-flex px-2 py-1 text-xs font-bold bg-p-tint/80 text-p-on-tint rounded-md backdrop-blur-sm">
                         {getEinnahmeKategorieLabel(item.kategorie)}
                       </span>
                     </td>
-                    <td className="px-3 py-2.5 text-[11px] text-muted hidden lg:table-cell">{getZahlungsartLabel(item.zahlungsart)}</td>
-                    <td className="px-3 py-2.5 text-right text-xs font-bold text-success-600 dark:text-success-400 whitespace-nowrap">
+                    <td className="px-4 py-2 text-sm text-muted hidden lg:table-cell">{getZahlungsartLabel(item.zahlungsart)}</td>
+                    <td className="px-4 py-2 text-right text-sm font-bold text-success-600 dark:text-success-400 whitespace-nowrap">
                       +{formatCurrency(item.betrag)}
                     </td>
-                    <td className="px-4 py-2.5 text-right">
-                      <div className="flex justify-end gap-0.5">
-                        <button onClick={() => openEdit(item)} className="p-1 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm">
-                          <Edit2 size={13} />
+                    <td className="px-4 py-2 text-right">
+                      <div className="flex justify-end gap-1">
+                        <button onClick={() => openEdit(item)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm">
+                          <Edit2 size={15} />
                         </button>
-                        <button onClick={() => setDeleteId(item.id)} className="p-1 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm">
-                          <Trash2 size={13} />
+                        <button onClick={() => setDeleteId(item.id)} className="p-1.5 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm">
+                          <Trash2 size={15} />
                         </button>
                       </div>
                     </td>

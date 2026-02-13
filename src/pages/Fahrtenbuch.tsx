@@ -10,8 +10,8 @@ import { formatDate } from '../utils/formatters';
 import { exportFahrtenCSV } from '../utils/exportUtils';
 import type { Fahrt } from '../types';
 
-const inputCls = 'w-full px-3 py-2 text-xs glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
-const labelCls = 'block text-[10px] font-bold text-heading mb-1 uppercase tracking-wide';
+const inputCls = 'w-full px-3 py-2 text-sm glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
+const labelCls = 'block text-xs font-bold text-heading mb-1 uppercase tracking-wide';
 
 export default function Fahrtenbuch() {
   const { onMenuClick } = useOutletContext<{ onMenuClick: () => void }>();
@@ -64,63 +64,63 @@ export default function Fahrtenbuch() {
 
       <div className="p-4 sm:p-6 space-y-3">
         <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
           <input type="text" placeholder="Fahrten suchen..." value={search} onChange={e => setSearch(e.target.value)}
-            className="glass w-full pl-9 pr-3 py-2 text-xs rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all" />
+            className="glass w-full pl-10 pr-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all" />
         </div>
 
-        <div className="glass rounded-lg p-3 flex items-center justify-between">
+        <div className="glass rounded-lg p-2.5 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm shadow-primary-500/20">
               <Car size={14} className="text-white" />
             </div>
-            <span className="text-xs font-bold text-p-on-tint uppercase tracking-wide">Gesamt: {filtered.length} Fahrten</span>
+            <span className="text-sm font-bold text-p-on-tint uppercase tracking-wide">Gesamt: {filtered.length} Fahrten</span>
           </div>
-          <span className="text-base font-black text-p-on-tint">{gesamtKm.toLocaleString('de-DE')} km</span>
+          <span className="text-lg font-black text-p-on-tint">{gesamtKm.toLocaleString('de-DE')} km</span>
         </div>
 
-        <div className="glass rounded-lg p-3">
-          <p className="text-[10px] text-w-on-tint leading-relaxed">
+        <div className="glass rounded-lg p-2.5">
+          <p className="text-xs text-w-on-tint leading-relaxed">
             <strong>Tipp:</strong> Die Kilometerpauschale beträgt 0,30 EUR/km (ab dem 21. km: 0,38 EUR/km bei Entfernungspauschale).
             Bei geschäftlichen Fahrten mit eigenem PKW können Sie {gesamtKm > 0 ? `bis zu ${(gesamtKm * 0.30).toFixed(2).replace('.', ',')} EUR` : 'die tatsächlichen Kosten oder die Pauschale'} als Betriebsausgabe geltend machen.
           </p>
         </div>
 
-        <div className="glass rounded-xl overflow-hidden">
+        <div className="glass rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-divider/50 bg-card-alt/30">
-                  <th className="text-left px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Datum</th>
-                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Route</th>
-                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider hidden md:table-cell">Zweck</th>
-                  <th className="text-left px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider hidden lg:table-cell">Kunde</th>
-                  <th className="text-right px-3 py-2 text-[10px] font-black text-muted uppercase tracking-wider">Kilometer</th>
-                  <th className="text-right px-4 py-2 text-[10px] font-black text-muted uppercase tracking-wider w-20"></th>
+                  <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Datum</th>
+                  <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Route</th>
+                  <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider hidden md:table-cell">Zweck</th>
+                  <th className="text-left px-4 py-2 text-xs font-black text-muted uppercase tracking-wider hidden lg:table-cell">Kunde</th>
+                  <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider">Kilometer</th>
+                  <th className="text-right px-4 py-2 text-xs font-black text-muted uppercase tracking-wider w-20"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-divider/30">
                 {filtered.map(item => (
                   <tr key={item.id} className="hover:bg-card-alt/30 transition-colors">
-                    <td className="px-4 py-2.5 text-xs text-body whitespace-nowrap">{formatDate(item.datum)}</td>
-                    <td className="px-3 py-2.5">
+                    <td className="px-4 py-2 text-sm text-body whitespace-nowrap">{formatDate(item.datum)}</td>
+                    <td className="px-4 py-2">
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-md bg-p-tint/80 flex items-center justify-center shrink-0 backdrop-blur-sm">
                           <MapPin size={11} className="text-p-on-tint" />
                         </div>
                         <div>
-                          <p className="text-xs font-semibold text-heading">{item.startort}</p>
-                          <p className="text-[10px] text-muted">nach {item.zielort}</p>
+                          <p className="text-sm font-semibold text-heading">{item.startort}</p>
+                          <p className="text-xs text-muted">nach {item.zielort}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-3 py-2.5 text-xs text-body hidden md:table-cell">{item.zweck}</td>
-                    <td className="px-3 py-2.5 text-[11px] text-muted hidden lg:table-cell">{item.kunde || '—'}</td>
-                    <td className="px-3 py-2.5 text-right text-xs font-bold text-heading whitespace-nowrap">{item.kilometer.toLocaleString('de-DE')} km</td>
-                    <td className="px-4 py-2.5 text-right">
+                    <td className="px-4 py-2 text-sm text-body hidden md:table-cell">{item.zweck}</td>
+                    <td className="px-4 py-2 text-xs text-muted hidden lg:table-cell">{item.kunde || '—'}</td>
+                    <td className="px-4 py-2 text-right text-sm font-bold text-heading whitespace-nowrap">{item.kilometer.toLocaleString('de-DE')} km</td>
+                    <td className="px-4 py-2 text-right">
                       <div className="flex justify-end gap-0.5">
-                        <button onClick={() => openEdit(item)} className="p-1 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm"><Edit2 size={13} /></button>
-                        <button onClick={() => setDeleteId(item.id)} className="p-1 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm"><Trash2 size={13} /></button>
+                        <button onClick={() => openEdit(item)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm"><Edit2 size={15} /></button>
+                        <button onClick={() => setDeleteId(item.id)} className="p-1.5 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm"><Trash2 size={15} /></button>
                       </div>
                     </td>
                   </tr>

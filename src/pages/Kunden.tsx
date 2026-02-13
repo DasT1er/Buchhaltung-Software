@@ -8,8 +8,8 @@ import DeleteConfirm from '../components/DeleteConfirm';
 import { useStore } from '../store/useStore';
 import type { Kunde } from '../types';
 
-const inputCls = 'w-full px-3 py-2 text-xs glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
-const labelCls = 'block text-[10px] font-bold text-heading mb-1 uppercase tracking-wide';
+const inputCls = 'w-full px-3 py-2 text-sm glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
+const labelCls = 'block text-xs font-bold text-heading mb-1 uppercase tracking-wide';
 
 export default function Kunden() {
   const { onMenuClick } = useOutletContext<{ onMenuClick: () => void }>();
@@ -55,13 +55,13 @@ export default function Kunden() {
 
       <div className="p-4 sm:p-6 space-y-3">
         <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
           <input
             type="text"
             placeholder="Kunden suchen..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="glass w-full pl-9 pr-3 py-2 text-xs rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all"
+            className="glass w-full pl-10 pr-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all"
           />
         </div>
 
@@ -74,24 +74,24 @@ export default function Kunden() {
                     <Building2 size={16} className="text-white" />
                   </div>
                   <div className="min-w-0">
-                    <h4 className="text-xs font-bold text-heading truncate">{kunde.firma}</h4>
-                    {kunde.ansprechpartner && <p className="text-[10px] text-muted">{kunde.ansprechpartner}</p>}
+                    <h4 className="text-sm font-bold text-heading truncate">{kunde.firma}</h4>
+                    {kunde.ansprechpartner && <p className="text-xs text-muted">{kunde.ansprechpartner}</p>}
                   </div>
                 </div>
                 <div className="flex gap-0.5 shrink-0">
-                  <button onClick={() => openEdit(kunde)} className="p-1 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm"><Edit2 size={12} /></button>
-                  <button onClick={() => setDeleteId(kunde.id)} className="p-1 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm"><Trash2 size={12} /></button>
+                  <button onClick={() => openEdit(kunde)} className="p-1.5 text-muted hover:text-primary-600 hover:bg-p-tint/60 rounded-md transition-colors backdrop-blur-sm"><Edit2 size={15} /></button>
+                  <button onClick={() => setDeleteId(kunde.id)} className="p-1.5 text-muted hover:text-danger-600 hover:bg-d-tint/60 rounded-md transition-colors backdrop-blur-sm"><Trash2 size={15} /></button>
                 </div>
               </div>
               <div className="space-y-1 text-xs">
                 {(kunde.strasse || kunde.plz || kunde.ort) && (
-                  <p className="text-body text-[10px]">{[kunde.strasse, `${kunde.plz ?? ''} ${kunde.ort ?? ''}`.trim()].filter(Boolean).join(', ')}</p>
+                  <p className="text-body text-xs">{[kunde.strasse, `${kunde.plz ?? ''} ${kunde.ort ?? ''}`.trim()].filter(Boolean).join(', ')}</p>
                 )}
                 {kunde.email && (
-                  <div className="flex items-center gap-1.5 text-body"><Mail size={11} className="text-muted shrink-0" /><span className="text-[10px] truncate">{kunde.email}</span></div>
+                  <div className="flex items-center gap-1.5 text-body"><Mail size={11} className="text-muted shrink-0" /><span className="text-xs truncate">{kunde.email}</span></div>
                 )}
                 {kunde.telefon && (
-                  <div className="flex items-center gap-1.5 text-body"><Phone size={11} className="text-muted shrink-0" /><span className="text-[10px]">{kunde.telefon}</span></div>
+                  <div className="flex items-center gap-1.5 text-body"><Phone size={11} className="text-muted shrink-0" /><span className="text-xs">{kunde.telefon}</span></div>
                 )}
               </div>
             </div>

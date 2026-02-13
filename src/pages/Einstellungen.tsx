@@ -6,8 +6,8 @@ import { useStore } from '../store/useStore';
 import { exportAllDataJSON } from '../utils/exportUtils';
 import type { AppState } from '../types';
 
-const inputCls = 'w-full px-3 py-2 text-xs glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
-const labelCls = 'block text-[10px] font-bold text-heading mb-1 uppercase tracking-wide';
+const inputCls = 'w-full px-3 py-2 text-sm glass rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/50 text-heading transition-all';
+const labelCls = 'block text-xs font-bold text-heading mb-1 uppercase tracking-wide';
 
 export default function Einstellungen() {
   const { onMenuClick } = useOutletContext<{ onMenuClick: () => void }>();
@@ -62,7 +62,7 @@ export default function Einstellungen() {
 
       <div className="p-4 sm:p-6 space-y-4 max-w-2xl">
         {/* Firmendaten */}
-        <div className="glass rounded-xl overflow-hidden">
+        <div className="glass rounded-lg overflow-hidden">
           <div className="px-4 py-2.5 border-b border-divider/50 flex items-center gap-2.5 bg-card-alt/30">
             <div className="w-7 h-7 rounded-md bg-p-tint/80 flex items-center justify-center backdrop-blur-sm">
               <Info size={14} className="text-p-on-tint" />
@@ -92,7 +92,7 @@ export default function Einstellungen() {
         </div>
 
         {/* Datensicherung */}
-        <div className="glass rounded-xl overflow-hidden">
+        <div className="glass rounded-lg overflow-hidden">
           <div className="px-4 py-2.5 border-b border-divider/50 flex items-center gap-2.5 bg-card-alt/30">
             <div className="w-7 h-7 rounded-md bg-s-tint/80 flex items-center justify-center backdrop-blur-sm">
               <Shield size={14} className="text-s-on-tint" />
@@ -119,7 +119,7 @@ export default function Einstellungen() {
         </div>
 
         {/* Über */}
-        <div className="glass rounded-xl overflow-hidden">
+        <div className="glass rounded-lg overflow-hidden">
           <div className="px-4 py-2.5 border-b border-divider/50 bg-card-alt/30">
             <h3 className="text-xs font-black text-heading uppercase tracking-wide">Über BuchungsProfi</h3>
           </div>
