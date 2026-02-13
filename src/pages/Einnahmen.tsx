@@ -88,7 +88,7 @@ export default function Einnahmen() {
         }
       />
 
-      <div className="p-4 sm:p-6 space-y-3">
+      <div className="space-y-3">
         <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />

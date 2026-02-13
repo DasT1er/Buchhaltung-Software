@@ -60,7 +60,7 @@ export default function Einstellungen() {
     <>
       <Header title="Einstellungen" subtitle="Firmendaten und App-Konfiguration" onMenuClick={onMenuClick} />
 
-      <div className="p-4 sm:p-6 space-y-4 max-w-2xl">
+      <div className="space-y-4 max-w-2xl">
         {/* Firmendaten */}
         <div className="glass rounded-lg overflow-hidden">
           <div className="px-4 py-2.5 border-b border-divider/50 flex items-center gap-2.5 bg-card-alt/30">

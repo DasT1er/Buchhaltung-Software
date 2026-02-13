@@ -53,7 +53,7 @@ export default function Kunden() {
         }
       />
 
-      <div className="p-4 sm:p-6 space-y-3">
+      <div className="space-y-3">
         <div className="relative">
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
           <input

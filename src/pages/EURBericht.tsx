@@ -60,7 +60,7 @@ export default function EURBericht() {
         }
       />
 
-      <div className="p-4 sm:p-6 space-y-4">
+      <div className="space-y-4">
         {/* Header Card */}
         <div className="glass rounded-lg p-4">
           <div className="flex items-start gap-3">

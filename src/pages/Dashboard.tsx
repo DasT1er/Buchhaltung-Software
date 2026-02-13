@@ -83,7 +83,7 @@ export default function Dashboard() {
     <>
       <Header title="Dashboard" subtitle={`Übersicht für ${geschaeftsjahr}`} onMenuClick={onMenuClick} />
 
-      <div className="p-4 sm:p-6 space-y-4">
+      <div className="space-y-4">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <KPICard title="Einnahmen" value={formatCurrency(gesamtEinnahmen)} subtitle={`${jahresEinnahmen.length} Buchungen`} icon={TrendingUp} color="green" />
