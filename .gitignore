@@ -13,6 +13,9 @@ dist-ssr
 release
 *.local
 
+# User data (portable data folder - DO NOT COMMIT!)
+data/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
