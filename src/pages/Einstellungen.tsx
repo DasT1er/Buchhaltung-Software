@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { Save, Download, Upload, AlertTriangle, Shield, Info } from 'lucide-react';
+import { Save, Download, Upload, AlertTriangle, Shield, Info, Paperclip, HardDrive } from 'lucide-react';
 import Header from '../components/Header';
 import { useStore } from '../store/useStore';
 import { exportAllDataJSON } from '../utils/exportUtils';
@@ -115,6 +115,55 @@ export default function Einstellungen() {
                 <AlertTriangle size={14} className="shrink-0" />{importError}
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Beleg-Speicherung Info */}
+        <div className="glass rounded-lg overflow-hidden">
+          <div className="px-4 py-2.5 border-b border-divider/50 flex items-center gap-2.5 bg-card-alt/30">
+            <div className="w-7 h-7 rounded-md bg-p-tint/80 flex items-center justify-center backdrop-blur-sm">
+              <Paperclip size={14} className="text-p-on-tint" />
+            </div>
+            <h3 className="text-xs font-black text-heading uppercase tracking-wide">Beleg-Speicherung</h3>
+          </div>
+          <div className="p-4 space-y-3">
+            <div className="flex items-start gap-2.5 p-3 glass rounded-lg bg-primary-500/5">
+              <HardDrive size={16} className="text-primary-600 dark:text-primary-400 shrink-0 mt-0.5" />
+              <div className="space-y-1.5">
+                <p className="text-xs font-semibold text-heading">Belege werden im Browser gespeichert (IndexedDB)</p>
+                <p className="text-xs text-body leading-relaxed">
+                  Alle hochgeladenen Belege (Rechnungen, Quittungen, Bilder) werden sicher in der Browser-Datenbank gespeichert.
+                  <strong className="text-heading"> Kein Ordner auf der Festplatte</strong> – alles läuft direkt im Browser.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2.5 p-3 glass rounded-lg bg-amber-500/5">
+              <AlertTriangle size={16} className="text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+              <div className="space-y-1.5">
+                <p className="text-xs font-semibold text-heading">WICHTIG: Belege werden NICHT exportiert!</p>
+                <p className="text-xs text-body leading-relaxed">
+                  Das JSON-Backup enthält <strong className="text-heading">nur die Metadaten</strong> (Dateiname, Größe).
+                  Die eigentlichen Dateien müssen <strong className="text-heading">manuell heruntergeladen</strong> werden!
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3 glass rounded-lg">
+              <p className="text-xs font-semibold text-heading mb-2">💡 Empfehlung für Backup:</p>
+              <ol className="text-xs text-body space-y-1 list-decimal list-inside leading-relaxed">
+                <li>Regelmäßig alle Belege manuell downloaden (Click → Details → Download)</li>
+                <li>In einem Ordner speichern: z.B. <code className="px-1 py-0.5 bg-card-alt rounded text-[10px] font-mono">Belege/2026/01_Januar/</code></li>
+                <li>JSON-Backup separat speichern (enthält alle Buchungsdaten)</li>
+              </ol>
+            </div>
+
+            <div className="p-3 glass rounded-lg bg-success-500/5">
+              <p className="text-xs text-body leading-relaxed">
+                📚 <strong className="text-heading">Mehr Infos:</strong> Siehe Datei{' '}
+                <code className="px-1 py-0.5 bg-card-alt rounded text-[10px] font-mono">BELEGE_SPEICHERUNG.md</code> im Projektordner
+              </p>
+            </div>
           </div>
         </div>
 
