@@ -43,6 +43,26 @@ console.log('📁 Data Pfad:', userDataPath);
 console.log('💾 EXE Pfad:', process.execPath);
 console.log('📦 App Pfad:', app.getAppPath());
 
+// WICHTIG: Schreibe Debug-Info in Log-Datei (neben der EXE!)
+try {
+  const logPath = path.join(portableRoot, 'buchungsprofi-debug.log');
+  const logContent = [
+    '=== BuchungsProfi Debug Info ===',
+    `Start: ${new Date().toISOString()}`,
+    `Data Pfad: ${userDataPath}`,
+    `EXE Pfad: ${process.execPath}`,
+    `App Pfad: ${app.getAppPath()}`,
+    `Portable Root: ${portableRoot}`,
+    `Data Ordner existiert: ${fs.existsSync(userDataPath)}`,
+    `Belege Ordner existiert: ${fs.existsSync(belegeDir)}`,
+    '================================\n'
+  ].join('\n');
+  fs.writeFileSync(logPath, logContent, 'utf-8');
+  console.log('📝 Debug-Log geschrieben:', logPath);
+} catch (error) {
+  console.error('❌ Fehler beim Schreiben der Log-Datei:', error);
+}
+
 // IPC HANDLERS - File System Operations
 
 // Read JSON data file
