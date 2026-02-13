@@ -11,7 +11,7 @@ export default function Layout() {
     <div className="flex h-screen overflow-hidden bg-page">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} isDark={isDark} onToggleTheme={toggleTheme} />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <main className="flex-1 overflow-y-auto px-4 py-4 lg:px-8 lg:py-6">
+        <main className="flex-1 overflow-y-auto px-6 py-5 lg:px-10 lg:py-6">
           <Outlet context={{ onMenuClick: () => setSidebarOpen(true), isDark }} />
         </main>
       </div>

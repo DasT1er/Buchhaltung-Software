@@ -9,11 +9,11 @@ interface HeaderProps {
 
 export default function Header({ title, subtitle, onMenuClick, actions }: HeaderProps) {
   return (
-    <header className="glass border-b border-divider/50 px-4 sm:px-6 h-14 flex items-center justify-between no-print sticky top-0 z-30">
+    <header className="glass border-b border-divider/50 px-0 h-14 flex items-center justify-between no-print mb-4">
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-1.5 -ml-1.5 text-muted hover:text-heading rounded-lg hover:bg-card-alt/40 transition-colors backdrop-blur-sm"
+          className="lg:hidden p-1.5 text-muted hover:text-heading rounded-lg hover:bg-card-alt/40 transition-colors backdrop-blur-sm"
         >
           <Menu size={20} />
         </button>
